@@ -2,41 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* AstroGuardian Mission Control Design System - Space Theme
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Space Theme - Deep cosmic background */
+    --background: 222 47% 4%;
+    --foreground: 194 87% 85%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Cards with subtle space glow */
+    --card: 223 44% 8%;
+    --card-foreground: 194 87% 85%;
+    
+    --popover: 223 44% 8%;
+    --popover-foreground: 194 87% 85%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Cyan primary for active elements */
+    --primary: 194 87% 65%;
+    --primary-foreground: 222 47% 4%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Darker secondary elements */
+    --secondary: 223 44% 12%;
+    --secondary-foreground: 194 70% 75%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Muted space grays */
+    --muted: 223 30% 15%;
+    --muted-foreground: 194 30% 60%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent cyan glow */
+    --accent: 194 87% 65%;
+    --accent-foreground: 222 47% 4%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Alert red for critical systems */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Warning amber */
+    --warning: 38 95% 62%;
+    --warning-foreground: 0 0% 4%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Success green for operational status */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
 
-    --radius: 0.5rem;
+    /* Borders with subtle glow */
+    --border: 223 30% 20%;
+    --input: 223 30% 15%;
+    --ring: 194 87% 65%;
+
+    /* Rounded elements */
+    --radius: 0.75rem;
+
+    /* Custom space gradients */
+    --gradient-space: linear-gradient(135deg, hsl(222 47% 4%), hsl(235 39% 7%));
+    --gradient-card: linear-gradient(135deg, hsl(223 44% 8%), hsl(223 44% 12%));
+    --gradient-glow: linear-gradient(135deg, hsl(194 87% 65% / 0.1), hsl(194 87% 65% / 0.05));
+    
+    /* Glows and shadows */
+    --glow-primary: 0 0 20px hsl(194 87% 65% / 0.3);
+    --glow-warning: 0 0 20px hsl(38 95% 62% / 0.4);
+    --glow-danger: 0 0 20px hsl(0 72% 51% / 0.4);
+    
+    /* Animation durations */
+    --transition-fast: 0.15s ease;
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +133,36 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Custom space-themed scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.8);
+  }
+
+  /* Glowing text effect for headings */
+  .glow-text {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+  }
+
+  /* Data streaming animation */
+  .data-stream-bg {
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
+    background-size: 200% 100%;
+    animation: data-stream 3s linear infinite;
   }
 }
