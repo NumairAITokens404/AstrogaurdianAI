@@ -4,8 +4,10 @@ import CrewHealthPanel from "@/components/CrewHealthPanel";
 import AISuggestionsPanel from "@/components/AISuggestionsPanel";
 import RoverNavigationPanel from "@/components/RoverNavigationPanel";
 import HazardDetectionPanel from "@/components/HazardDetectionPanel";
+import MissionCharts from "@/components/MissionCharts";
 import AlertNotification from "@/components/AlertNotification";
 import spaceBackground from "@/assets/space-background.jpg";
+import { motion } from "framer-motion";
 
 const Index = () => {
   const [showAlert, setShowAlert] = useState(true);
@@ -16,6 +18,7 @@ const Index = () => {
     { id: "crew-health", label: "Crew Health" },
     { id: "rover-navigation", label: "Rover Navigation" },
     { id: "hazards", label: "Hazards & Debris" },
+    { id: "mission-charts", label: "Mission Analytics" },
     { id: "digital-twin", label: "Digital Twin Simulation" },
     { id: "mood-companion", label: "Mood/Companion" }
   ];
@@ -66,6 +69,16 @@ const Index = () => {
         );
       case "hazards":
         return <HazardDetectionPanel />;
+      case "mission-charts":
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <MissionCharts />
+          </motion.div>
+        );
       case "digital-twin":
         return (
           <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">

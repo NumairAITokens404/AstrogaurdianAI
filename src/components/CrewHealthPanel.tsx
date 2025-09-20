@@ -1,6 +1,9 @@
 import StatusCard from "./StatusCard";
 import ProgressBar from "./ProgressBar";
+import AnimatedAvatar from "./AnimatedAvatar";
+import InteractiveChart from "./InteractiveChart";
 import { Heart, Activity, AlertTriangle } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface CrewMember {
   id: number;
@@ -31,17 +34,76 @@ const crewMembers: CrewMember[] = [
 ];
 
 const CrewHealthPanel = () => {
+  // Health monitoring chart data
+  const healthData = [
+    { time: '10:00', health: 95 },
+    { time: '12:00', health: 92 },
+    { time: '14:00', health: 88 },
+    { time: '16:00', health: 65 },
+    { time: '18:00', health: 70 },
+    { time: '20:00', health: 75 }
+  ];
+
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-foreground mb-4">Crew Health</h2>
+    <div className="space-y-6">
+      <motion.h2 
+        className="text-lg font-semibold text-foreground mb-4"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        Crew Health Monitoring
+      </motion.h2>
       
-      {crewMembers.map((member) => (
-        <StatusCard 
+      {/* Crew Avatars */}
+      <motion.div 
+        className="flex justify-center space-x-8 mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
+        <AnimatedAvatar
+          name="Member #1"
+          status="normal"
+          heartRate={78}
+          activity="EVA Prep"
+        />
+        <AnimatedAvatar
+          name="Member #2"
+          status="critical"
+          heartRate={130}
+          activity="Emergency"
+        />
+      </motion.div>
+
+      {/* Health Trend Chart */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+      >
+        <InteractiveChart
+          type="area"
+          title="Overall Health Trend"
+          data={healthData}
+          dataKey="health"
+          color="#10b981"
+          height={200}
+        />
+      </motion.div>
+      
+      {crewMembers.map((member, index) => (
+        <motion.div
           key={member.id}
-          title={member.name}
-          alert={member.status === "Critical"}
-          glowEffect={member.status === "Critical"}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 + (index * 0.2), duration: 0.5 }}
         >
+          <StatusCard 
+            title={member.name}
+            alert={member.status === "Critical"}
+            glowEffect={member.status === "Critical"}
+          >
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -82,7 +144,8 @@ const CrewHealthPanel = () => {
               </div>
             </div>
           </div>
-        </StatusCard>
+          </StatusCard>
+        </motion.div>
       ))}
     </div>
   );

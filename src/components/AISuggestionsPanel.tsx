@@ -1,7 +1,8 @@
 import StatusCard from "./StatusCard";
 import ProgressBar from "./ProgressBar";
 import { Button } from "@/components/ui/button";
-import { Brain, CheckCircle2, XCircle } from "lucide-react";
+import { Brain, CheckCircle2, XCircle, Sparkles, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 interface Suggestion {
