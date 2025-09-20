@@ -10,6 +10,118 @@ import spaceBackground from "@/assets/space-background.jpg";
 const Index = () => {
   const [showAlert, setShowAlert] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [activeNavItem, setActiveNavItem] = useState("crew-health");
+
+  const navigationItems = [
+    { id: "crew-health", label: "Crew Health" },
+    { id: "rover-navigation", label: "Rover Navigation" },
+    { id: "hazards", label: "Hazards & Debris" },
+    { id: "digital-twin", label: "Digital Twin Simulation" },
+    { id: "mood-companion", label: "Mood/Companion" }
+  ];
+
+  const renderMainContent = () => {
+    switch (activeNavItem) {
+      case "crew-health":
+        return (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <CrewHealthPanel />
+            <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Medical Bay Status</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Oxygen Levels</span>
+                  <span className="text-warning">Critical</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Medical Supplies</span>
+                  <span className="text-success">Optimal</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Emergency Systems</span>
+                  <span className="text-success">Online</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case "rover-navigation":
+        return (
+          <div className="space-y-6">
+            <RoverNavigationPanel />
+            <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Route Planning</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-muted/20 rounded-lg">
+                  <div className="text-sm text-muted-foreground">Next Waypoint</div>
+                  <div className="text-lg font-mono text-primary">Site Delta-7</div>
+                </div>
+                <div className="p-4 bg-muted/20 rounded-lg">
+                  <div className="text-sm text-muted-foreground">ETA</div>
+                  <div className="text-lg font-mono text-primary">2.3 hrs</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case "hazards":
+        return <HazardDetectionPanel />;
+      case "digital-twin":
+        return (
+          <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Digital Twin Simulation</h3>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="p-4 bg-muted/20 rounded-lg">
+                  <div className="text-sm text-muted-foreground">Simulation Status</div>
+                  <div className="text-lg font-medium text-success">Running</div>
+                </div>
+                <div className="p-4 bg-muted/20 rounded-lg">
+                  <div className="text-sm text-muted-foreground">Prediction Accuracy</div>
+                  <div className="text-lg font-medium text-primary">94.7%</div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="p-4 bg-muted/20 rounded-lg">
+                  <div className="text-sm text-muted-foreground">Processing Power</div>
+                  <div className="text-lg font-medium text-warning">High Load</div>
+                </div>
+                <div className="p-4 bg-muted/20 rounded-lg">
+                  <div className="text-sm text-muted-foreground">Data Sync</div>
+                  <div className="text-lg font-medium text-success">Real-time</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case "mood-companion":
+        return (
+          <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Crew Psychological Status</h3>
+            <div className="space-y-4">
+              <div className="p-4 bg-muted/20 rounded-lg">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-muted-foreground">Overall Morale</span>
+                  <span className="text-success">Good</span>
+                </div>
+                <div className="w-full bg-muted/30 rounded-full h-2">
+                  <div className="bg-success h-2 rounded-full" style={{ width: "75%" }}></div>
+                </div>
+              </div>
+              <div className="p-4 bg-muted/20 rounded-lg">
+                <div className="text-sm text-muted-foreground mb-2">AI Companion Messages</div>
+                <div className="space-y-2 text-sm">
+                  <div className="text-foreground">"Great work on today's mission objectives!"</div>
+                  <div className="text-muted-foreground">"Remember to take your scheduled rest period."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -76,22 +188,26 @@ const Index = () => {
             <div className="space-y-3 p-4 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
               <div className="text-sm font-medium text-muted-foreground">Navigation</div>
               <div className="space-y-2 text-sm">
-                <div className="text-primary cursor-pointer hover:text-primary/80 transition-colors">Crew Health</div>
-                <div className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors">Rover Navigation</div>
-                <div className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors">Hazards & Debris</div>
-                <div className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors">Digital Twin Simulation</div>
-                <div className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors">Mood/Companion</div>
+                {navigationItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className={`cursor-pointer transition-colors ${
+                      activeNavItem === item.id
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    onClick={() => setActiveNavItem(item.id)}
+                  >
+                    {item.label}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
           {/* Main Content Area */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <CrewHealthPanel />
-              <RoverNavigationPanel />
-            </div>
-            <HazardDetectionPanel />
+            {renderMainContent()}
           </div>
 
           {/* Right Sidebar */}
