@@ -165,4 +165,67 @@ All colors MUST be HSL.
     background-size: 200% 100%;
     animation: data-stream 3s linear infinite;
   }
+
+  /* Matrix rain effect */
+  .matrix-char {
+    color: hsl(var(--primary));
+    text-shadow: 0 0 5px hsl(var(--primary));
+    font-family: 'Courier New', monospace;
+  }
+
+  /* Holographic shimmer effect */
+  .holo-shimmer {
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      hsl(var(--primary) / 0.1) 50%,
+      transparent 70%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% -200%; }
+    50% { background-position: 200% 200%; }
+    100% { background-position: -200% -200%; }
+  }
+
+  /* Glitch effect */
+  .glitch {
+    position: relative;
+    color: hsl(var(--primary));
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .glitch::before {
+    animation: glitch-1 0.5s infinite;
+    color: #ff0000;
+    z-index: -1;
+  }
+
+  .glitch::after {
+    animation: glitch-2 0.5s infinite;
+    color: #00ffff;
+    z-index: -2;
+  }
+
+  @keyframes glitch-1 {
+    0%, 14%, 15%, 49%, 50%, 99%, 100% { transform: translate(0); }
+    15%, 49% { transform: translate(-2px, 0); }
+  }
+
+  @keyframes glitch-2 {
+    0%, 20%, 21%, 62%, 63%, 99%, 100% { transform: translate(0); }
+    21%, 62% { transform: translate(2px, 0); }
+  }
 }

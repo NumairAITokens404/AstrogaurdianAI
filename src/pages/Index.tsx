@@ -6,8 +6,15 @@ import RoverNavigationPanel from "@/components/RoverNavigationPanel";
 import HazardDetectionPanel from "@/components/HazardDetectionPanel";
 import MissionCharts from "@/components/MissionCharts";
 import AlertNotification from "@/components/AlertNotification";
+import ParticleSystem from "@/components/ParticleSystem";
+import HolographicDisplay from "@/components/HolographicDisplay";
+import MatrixRain from "@/components/MatrixRain";
+import GlitchText from "@/components/GlitchText";
+import AdvancedHUD from "@/components/AdvancedHUD";
+import QuantumLoader from "@/components/QuantumLoader";
 import spaceBackground from "@/assets/space-background.jpg";
 import { motion } from "framer-motion";
+import { Cpu, Zap, Shield, Activity, Target, Radar } from "lucide-react";
 
 const Index = () => {
   const [showAlert, setShowAlert] = useState(true);
@@ -29,42 +36,76 @@ const Index = () => {
         return (
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             <CrewHealthPanel />
-            <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Medical Bay Status</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Oxygen Levels</span>
-                  <span className="text-warning">Critical</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Medical Supplies</span>
-                  <span className="text-success">Optimal</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Emergency Systems</span>
-                  <span className="text-success">Online</span>
-                </div>
+            <HolographicDisplay title="MEDICAL BAY STATUS" className="col-span-1">
+              <div className="space-y-4">
+                <motion.div 
+                  className="flex justify-between items-center p-3 bg-muted/10 rounded border-l-4 border-destructive"
+                  whileHover={{ x: 5 }}
+                >
+                  <span className="text-muted-foreground flex items-center">
+                    <Activity className="h-4 w-4 mr-2" />
+                    Oxygen Levels
+                  </span>
+                  <GlitchText text="CRITICAL" className="text-destructive font-bold" trigger="continuous" intensity="high" />
+                </motion.div>
+                <motion.div 
+                  className="flex justify-between items-center p-3 bg-muted/10 rounded border-l-4 border-success"
+                  whileHover={{ x: 5 }}
+                >
+                  <span className="text-muted-foreground flex items-center">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Medical Supplies
+                  </span>
+                  <span className="text-success font-mono">98.7%</span>
+                </motion.div>
+                <motion.div 
+                  className="flex justify-between items-center p-3 bg-muted/10 rounded border-l-4 border-primary"
+                  whileHover={{ x: 5 }}
+                >
+                  <span className="text-muted-foreground flex items-center">
+                    <Zap className="h-4 w-4 mr-2" />
+                    Emergency Systems
+                  </span>
+                  <span className="text-success font-mono flex items-center">
+                    <QuantumLoader size="sm" color="primary" />
+                    <span className="ml-2">ONLINE</span>
+                  </span>
+                </motion.div>
               </div>
-            </div>
+            </HolographicDisplay>
           </div>
         );
       case "rover-navigation":
         return (
           <div className="space-y-6">
             <RoverNavigationPanel />
-            <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Route Planning</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-muted/20 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Next Waypoint</div>
-                  <div className="text-lg font-mono text-primary">Site Delta-7</div>
-                </div>
-                <div className="p-4 bg-muted/20 rounded-lg">
-                  <div className="text-sm text-muted-foreground">ETA</div>
-                  <div className="text-lg font-mono text-primary">2.3 hrs</div>
-                </div>
+            <HolographicDisplay title="AUTONOMOUS NAVIGATION PROTOCOL">
+              <div className="grid grid-cols-2 gap-6">
+                <motion.div 
+                  className="p-4 bg-gradient-to-br from-primary/10 to-accent/5 rounded-lg border border-primary/30"
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px hsl(var(--primary) / 0.3)" }}
+                >
+                  <div className="text-sm text-muted-foreground mb-2 flex items-center">
+                    <Target className="h-4 w-4 mr-2" />
+                    Next Waypoint
+                  </div>
+                  <GlitchText text="SITE DELTA-7" className="text-lg font-mono text-primary" />
+                </motion.div>
+                <motion.div 
+                  className="p-4 bg-gradient-to-br from-warning/10 to-accent/5 rounded-lg border border-warning/30"
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px hsl(var(--warning) / 0.3)" }}
+                >
+                  <div className="text-sm text-muted-foreground mb-2 flex items-center">
+                    <Radar className="h-4 w-4 mr-2" />
+                    ETA
+                  </div>
+                  <div className="text-lg font-mono text-warning flex items-center">
+                    <QuantumLoader size="sm" color="accent" />
+                    <span className="ml-2">2.3 hrs</span>
+                  </div>
+                </motion.div>
               </div>
-            </div>
+            </HolographicDisplay>
           </div>
         );
       case "hazards":
@@ -81,55 +122,106 @@ const Index = () => {
         );
       case "digital-twin":
         return (
-          <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Digital Twin Simulation</h3>
+          <HolographicDisplay title="QUANTUM DIGITAL TWIN MATRIX">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
-                <div className="p-4 bg-muted/20 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Simulation Status</div>
-                  <div className="text-lg font-medium text-success">Running</div>
-                </div>
-                <div className="p-4 bg-muted/20 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Prediction Accuracy</div>
-                  <div className="text-lg font-medium text-primary">94.7%</div>
-                </div>
+                <motion.div 
+                  className="p-4 bg-gradient-to-br from-success/20 to-primary/10 rounded-lg border border-success/40"
+                  whileHover={{ rotateY: 5, scale: 1.02 }}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  <div className="text-sm text-muted-foreground mb-2 flex items-center">
+                    <Cpu className="h-4 w-4 mr-2" />
+                    Simulation Status
+                  </div>
+                  <div className="text-lg font-medium text-success flex items-center">
+                    <QuantumLoader size="sm" color="primary" />
+                    <GlitchText text="RUNNING" className="ml-2" trigger="continuous" intensity="low" />
+                  </div>
+                </motion.div>
+                <motion.div 
+                  className="p-4 bg-gradient-to-br from-primary/20 to-accent/10 rounded-lg border border-primary/40"
+                  whileHover={{ rotateY: -5, scale: 1.02 }}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  <div className="text-sm text-muted-foreground mb-2">Prediction Accuracy</div>
+                  <div className="text-lg font-medium text-primary font-mono">94.7%</div>
+                </motion.div>
               </div>
               <div className="space-y-4">
-                <div className="p-4 bg-muted/20 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Processing Power</div>
-                  <div className="text-lg font-medium text-warning">High Load</div>
-                </div>
-                <div className="p-4 bg-muted/20 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Data Sync</div>
-                  <div className="text-lg font-medium text-success">Real-time</div>
-                </div>
+                <motion.div 
+                  className="p-4 bg-gradient-to-br from-warning/20 to-destructive/10 rounded-lg border border-warning/40"
+                  whileHover={{ rotateY: 5, scale: 1.02 }}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  <div className="text-sm text-muted-foreground mb-2">Processing Power</div>
+                  <GlitchText text="HIGH LOAD" className="text-lg font-medium text-warning" trigger="hover" intensity="medium" />
+                </motion.div>
+                <motion.div 
+                  className="p-4 bg-gradient-to-br from-success/20 to-primary/10 rounded-lg border border-success/40"
+                  whileHover={{ rotateY: -5, scale: 1.02 }}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  <div className="text-sm text-muted-foreground mb-2">Data Sync</div>
+                  <div className="text-lg font-medium text-success flex items-center">
+                    <div className="w-2 h-2 bg-success rounded-full animate-pulse mr-2" />
+                    Real-time
+                  </div>
+                </motion.div>
               </div>
             </div>
-          </div>
+          </HolographicDisplay>
         );
       case "mood-companion":
         return (
-          <div className="p-6 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Crew Psychological Status</h3>
-            <div className="space-y-4">
-              <div className="p-4 bg-muted/20 rounded-lg">
-                <div className="flex justify-between items-center mb-2">
+          <HolographicDisplay title="PSYCHOLOGICAL WELLNESS MATRIX">
+            <div className="space-y-6">
+              <motion.div 
+                className="p-4 bg-gradient-to-r from-success/20 to-primary/10 rounded-lg border border-success/40"
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="flex justify-between items-center mb-3">
                   <span className="text-muted-foreground">Overall Morale</span>
-                  <span className="text-success">Good</span>
+                  <GlitchText text="EXCELLENT" className="text-success font-bold" trigger="hover" />
                 </div>
-                <div className="w-full bg-muted/30 rounded-full h-2">
-                  <div className="bg-success h-2 rounded-full" style={{ width: "75%" }}></div>
+                <div className="w-full bg-muted/30 rounded-full h-3 overflow-hidden">
+                  <motion.div
+                    className="bg-gradient-to-r from-success to-primary h-3 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: "85%" }}
+                    transition={{ duration: 2, ease: "easeOut" }}
+                  />
                 </div>
-              </div>
-              <div className="p-4 bg-muted/20 rounded-lg">
-                <div className="text-sm text-muted-foreground mb-2">AI Companion Messages</div>
-                <div className="space-y-2 text-sm">
-                  <div className="text-foreground">"Great work on today's mission objectives!"</div>
-                  <div className="text-muted-foreground">"Remember to take your scheduled rest period."</div>
+              </motion.div>
+              <motion.div 
+                className="p-4 bg-gradient-to-br from-accent/10 to-primary/10 rounded-lg border border-accent/30"
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="text-sm text-muted-foreground mb-3 flex items-center">
+                  <Cpu className="h-4 w-4 mr-2" />
+                  AI Companion Messages
                 </div>
-              </div>
+                <div className="space-y-3 text-sm">
+                  <motion.div 
+                    className="text-foreground p-2 bg-success/10 rounded border-l-2 border-success"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <GlitchText text="Outstanding performance on Mission Objective Alpha-7!" />
+                  </motion.div>
+                  <motion.div 
+                    className="text-muted-foreground p-2 bg-primary/5 rounded border-l-2 border-primary"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    "Optimal rest cycle scheduled in 2.3 hours. Prepare for regenerative hibernation."
+                  </motion.div>
+                </div>
+              </motion.div>
             </div>
-          </div>
+          </HolographicDisplay>
         );
       default:
         return null;
@@ -147,15 +239,46 @@ const Index = () => {
     <div 
       className="min-h-screen bg-background relative overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(rgba(34, 39, 46, 0.95), rgba(34, 39, 46, 0.95)), url(${spaceBackground})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(12, 16, 32, 0.9)), url(${spaceBackground})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
       }}
     >
-      {/* Animated scan line */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent animate-scan-line" />
+      {/* Background Effects */}
+      <ParticleSystem />
+      <MatrixRain />
+      
+      {/* Advanced HUD Overlay */}
+      <AdvancedHUD />
+      
+      {/* Animated scan lines */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          className="absolute w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+          animate={{
+            y: ["-100%", "100vh"],
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div
+          className="absolute w-full h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent"
+          animate={{
+            y: ["-100%", "100vh"],
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 2
+          }}
+        />
       </div>
 
       <MissionHeader />
@@ -170,29 +293,61 @@ const Index = () => {
           />
         )}
 
-        {/* Mission Status Bar */}
-        <div className="flex items-center justify-between p-4 bg-card/30 backdrop-blur-sm rounded-lg border border-border/30">
-          <div className="flex items-center space-x-8">
-            <div>
-              <div className="text-sm text-muted-foreground">Mission Time</div>
-              <div className="text-lg font-mono text-primary">
-                {currentTime.toLocaleTimeString()}
+        {/* Enhanced Mission Status Bar */}
+        <HolographicDisplay title="MISSION COMMAND OVERVIEW" className="mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-8">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-primary/10 rounded-lg border border-primary/30"
+              >
+                <div className="text-sm text-muted-foreground">Mission Time</div>
+                <GlitchText 
+                  text={currentTime.toLocaleTimeString()}
+                  className="text-lg font-mono text-primary"
+                  trigger="continuous"
+                  intensity="low"
+                />
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-accent/10 rounded-lg border border-accent/30"
+              >
+                <div className="text-sm text-muted-foreground">Sol (Mars Day)</div>
+                <div className="text-lg font-mono text-accent flex items-center">
+                  <QuantumLoader size="sm" />
+                  <span className="ml-2">1247</span>
+                </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-warning/10 rounded-lg border border-warning/30"
+              >
+                <div className="text-sm text-muted-foreground">Communication Delay</div>
+                <GlitchText 
+                  text="14m 32s"
+                  className="text-lg font-mono text-warning"
+                  trigger="hover"
+                  intensity="medium"
+                />
+              </motion.div>
+            </div>
+            <motion.div 
+              className="text-right p-3 bg-success/10 rounded-lg border border-success/30"
+              whileHover={{ scale: 1.05, boxShadow: "0 0 25px hsl(var(--success) / 0.4)" }}
+            >
+              <div className="text-sm text-muted-foreground">System Status</div>
+              <div className="text-lg font-medium text-success flex items-center">
+                <motion.div
+                  className="w-3 h-3 bg-success rounded-full mr-2"
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                All Systems Nominal
               </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Sol (Mars Day)</div>
-              <div className="text-lg font-mono text-primary">1247</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Communication Delay</div>
-              <div className="text-lg font-mono text-warning">14m 32s</div>
-            </div>
+            </motion.div>
           </div>
-          <div className="text-right">
-            <div className="text-sm text-muted-foreground">System Status</div>
-            <div className="text-lg font-medium text-success">All Systems Nominal</div>
-          </div>
-        </div>
+        </HolographicDisplay>
 
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -229,10 +384,77 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Floating Planet */}
+        {/* Enhanced Floating Elements */}
         <div className="fixed bottom-8 right-8 pointer-events-none">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 animate-float shadow-2xl opacity-60" />
-          <div className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-orange-300/30 to-transparent animate-pulse" />
+          <motion.div
+            className="relative"
+            animate={{ 
+              y: [0, -10, 0],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{ 
+              duration: 4, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+          >
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 shadow-2xl opacity-80" />
+            <motion.div
+              className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-orange-300/40 to-transparent"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.5, 0.8, 0.5]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity 
+              }}
+            />
+            {/* Orbital rings */}
+            <motion.div
+              className="absolute -inset-4 border border-orange-400/30 rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute -inset-8 border border-orange-400/20 rounded-full"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            />
+          </motion.div>
+        </div>
+
+        {/* Floating Data Cubes */}
+        <div className="fixed top-20 right-20 pointer-events-none">
+          <motion.div
+            className="grid grid-cols-2 gap-2"
+            animate={{ 
+              rotateX: [0, 360],
+              rotateY: [0, 180]
+            }}
+            transition={{ 
+              duration: 8, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {[1,2,3,4].map(i => (
+              <motion.div
+                key={i}
+                className="w-4 h-4 bg-gradient-to-br from-primary/60 to-accent/40 rounded border border-primary/50"
+                animate={{ 
+                  opacity: [0.4, 1, 0.4],
+                  scale: [0.8, 1.2, 0.8]
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  delay: i * 0.2 
+                }}
+              />
+            ))}
+          </motion.div>
         </div>
       </div>
     </div>

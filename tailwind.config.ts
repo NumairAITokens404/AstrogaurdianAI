@@ -110,6 +110,39 @@ export default {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(100vh)" },
         },
+        "matrix-fall": {
+          "0%": { transform: "translateY(-100%)", opacity: "0" },
+          "10%": { opacity: "1" },
+          "90%": { opacity: "1" },
+          "100%": { transform: "translateY(100vh)", opacity: "0" }
+        },
+        "hologram": {
+          "0%, 100%": { 
+            opacity: "0.8",
+            transform: "translateZ(0) rotateX(0deg)"
+          },
+          "50%": { 
+            opacity: "1",
+            transform: "translateZ(10px) rotateX(1deg)"
+          }
+        },
+        "quantum-spin": {
+          "0%": { transform: "rotate(0deg) scale(1)" },
+          "25%": { transform: "rotate(90deg) scale(1.1)" },
+          "50%": { transform: "rotate(180deg) scale(1)" },
+          "75%": { transform: "rotate(270deg) scale(1.1)" },
+          "100%": { transform: "rotate(360deg) scale(1)" }
+        },
+        "energy-pulse": {
+          "0%, 100%": { 
+            boxShadow: "0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary)), 0 0 15px hsl(var(--primary))",
+            opacity: "0.8"
+          },
+          "50%": { 
+            boxShadow: "0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary)), 0 0 30px hsl(var(--primary))",
+            opacity: "1"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -118,6 +151,10 @@ export default {
         "data-stream": "data-stream 3s linear infinite",
         "float": "float 3s ease-in-out infinite",
         "scan-line": "scan-line 4s linear infinite",
+        "matrix-fall": "matrix-fall 8s linear infinite",
+        "hologram": "hologram 4s ease-in-out infinite",
+        "quantum-spin": "quantum-spin 3s ease-in-out infinite",
+        "energy-pulse": "energy-pulse 2s ease-in-out infinite",
       },
       backgroundImage: {
         "gradient-space": "var(--gradient-space)",
