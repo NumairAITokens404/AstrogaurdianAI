@@ -249,6 +249,9 @@ const Index = () => {
       <ParticleSystem />
       <MatrixRain />
       
+      {/* Advanced HUD Overlay */}
+      <AdvancedHUD />
+      
       {/* Animated scan lines */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div

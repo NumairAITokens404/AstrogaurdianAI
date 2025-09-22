@@ -81,7 +81,7 @@ const AdvancedHUD = () => {
               animate={{ opacity: [1, 0.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            <span className="text-xs text-success font-mono">SYSTEMS NOMINAL</span>
+            <span className="text-xs text-success font-mono">NOMINAL</span>
           </div>
         </div>
       </motion.div>
