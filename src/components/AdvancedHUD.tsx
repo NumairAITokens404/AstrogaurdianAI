@@ -18,6 +18,10 @@ const AdvancedHUD = () => {
     { id: 3, type: "Debris Field", distance: "0.8 AU", threat: "High" }
   ]);
 
+  const [scrollDirection, setScrollDirection] = useState('up');
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [panelsVisible, setPanelsVisible] = useState(true);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setStats(prev => ({
@@ -33,6 +37,22 @@ const AdvancedHUD = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const direction = currentScrollY > lastScrollY ? 'down' : 'up';
+      
+      setScrollDirection(direction);
+      setLastScrollY(currentScrollY);
+      
+      // Show panels when scrolling down, hide when scrolling up
+      setPanelsVisible(direction === 'down' || currentScrollY < 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const StatBar = ({ label, value, icon: Icon, color }: any) => (
     <div className="flex items-center space-x-3 p-2">
@@ -90,8 +110,11 @@ const AdvancedHUD = () => {
       <motion.div
         className="absolute left-0 top-20 w-64 bg-card/20 backdrop-blur-sm border border-border/30 rounded-lg pointer-events-auto"
         initial={{ x: -300 }}
-        animate={{ x: 0 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+        animate={{ 
+          x: panelsVisible ? 0 : -250,
+          opacity: panelsVisible ? 1 : 0.3
+        }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
       >
         <div className="p-4">
           <div className="text-sm font-medium text-foreground mb-4 font-mono uppercase tracking-wider">
@@ -116,8 +139,11 @@ const AdvancedHUD = () => {
       <motion.div
         className="absolute right-0 top-20 w-80 bg-card/20 backdrop-blur-sm border border-border/30 rounded-lg pointer-events-auto"
         initial={{ x: 300 }}
-        animate={{ x: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+        animate={{ 
+          x: panelsVisible ? 0 : 250,
+          opacity: panelsVisible ? 1 : 0.3
+        }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
       >
         <div className="p-4">
           <div className="text-sm font-medium text-foreground mb-4 font-mono uppercase tracking-wider">
