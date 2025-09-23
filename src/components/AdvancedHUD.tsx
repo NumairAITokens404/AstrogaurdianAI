@@ -18,9 +18,8 @@ const AdvancedHUD = () => {
     { id: 3, type: "Debris Field", distance: "0.8 AU", threat: "High" }
   ]);
 
-  const [scrollDirection, setScrollDirection] = useState('up');
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [panelsVisible, setPanelsVisible] = useState(true);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [panelsVisible, setPanelsVisible] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,20 +38,20 @@ const AdvancedHUD = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const direction = currentScrollY > lastScrollY ? 'down' : 'up';
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
       
-      setScrollDirection(direction);
-      setLastScrollY(currentScrollY);
+      // Check if mouse is near left panel (within 300px from left edge) or right panel (within 300px from right edge)
+      const nearLeftPanel = e.clientX < 300;
+      const nearRightPanel = e.clientX > window.innerWidth - 300;
+      const inUpperArea = e.clientY < window.innerHeight * 0.7; // Only in upper 70% of screen
       
-      // Show panels when scrolling down, hide when scrolling up
-      setPanelsVisible(direction === 'down' || currentScrollY < 50);
+      setPanelsVisible((nearLeftPanel || nearRightPanel) && inUpperArea);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const StatBar = ({ label, value, icon: Icon, color }: any) => (
     <div className="flex items-center space-x-3 p-2">
