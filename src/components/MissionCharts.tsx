@@ -1,7 +1,9 @@
 import InteractiveChart from './InteractiveChart';
+import { useRealTimeData } from '@/contexts/RealTimeDataContext';
 import { motion } from 'framer-motion';
 
 const MissionCharts = () => {
+  const realTimeData = useRealTimeData();
   // Sample data for different charts
   const oxygenData = [
     { time: '00:00', level: 98 },
@@ -51,7 +53,7 @@ const MissionCharts = () => {
         <InteractiveChart
           type="area"
           title="Oxygen Levels (24h)"
-          data={oxygenData}
+          data={realTimeData.missionCharts.oxygenData}
           dataKey="level"
           color="#10b981"
           height={250}
@@ -60,7 +62,7 @@ const MissionCharts = () => {
         <InteractiveChart
           type="line"
           title="Heart Rate Monitoring"
-          data={heartRateData}
+          data={realTimeData.missionCharts.heartRateData}
           dataKey="rate"
           color="#ef4444"
           height={250}
@@ -69,7 +71,7 @@ const MissionCharts = () => {
         <InteractiveChart
           type="bar"
           title="System Performance"
-          data={systemPerformance}
+          data={realTimeData.missionCharts.systemPerformance}
           dataKey="cpu"
           color="#3b82f6"
           height={250}
@@ -78,7 +80,7 @@ const MissionCharts = () => {
         <InteractiveChart
           type="pie"
           title="Rover System Status"
-          data={roverStatus}
+          data={realTimeData.missionCharts.roverStatus}
           dataKey="value"
           color="#8b5cf6"
           height={250}

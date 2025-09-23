@@ -2,47 +2,12 @@ import StatusCard from "./StatusCard";
 import ProgressBar from "./ProgressBar";
 import AnimatedAvatar from "./AnimatedAvatar";
 import InteractiveChart from "./InteractiveChart";
+import { useRealTimeData } from "@/contexts/RealTimeDataContext";
 import { Heart, Activity, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
 
-interface CrewMember {
-  id: number;
-  name: string;
-  heartRate: number;
-  oxygenLevel: number;
-  muscleLossRisk: "Low" | "Moderate" | "High" | "Elevated";
-  status: "Normal" | "Warning" | "Critical";
-}
-
-const crewMembers: CrewMember[] = [
-  {
-    id: 1,
-    name: "Crew Member #1",
-    heartRate: 78,
-    oxygenLevel: 97,
-    muscleLossRisk: "Low",
-    status: "Normal"
-  },
-  {
-    id: 2,
-    name: "Crew Member #2", 
-    heartRate: 130,
-    oxygenLevel: 65,
-    muscleLossRisk: "High",
-    status: "Critical"
-  }
-];
-
 const CrewHealthPanel = () => {
-  // Health monitoring chart data
-  const healthData = [
-    { time: '10:00', health: 95 },
-    { time: '12:00', health: 92 },
-    { time: '14:00', health: 88 },
-    { time: '16:00', health: 65 },
-    { time: '18:00', health: 70 },
-    { time: '20:00', health: 75 }
-  ];
+  const realTimeData = useRealTimeData();
 
   return (
     <div className="space-y-6">
@@ -64,14 +29,14 @@ const CrewHealthPanel = () => {
       >
         <AnimatedAvatar
           name="Member #1"
-          status="normal"
-          heartRate={78}
+          status={realTimeData.crewMembers[0]?.status.toLowerCase() as "normal" | "critical" | "warning"}
+          heartRate={realTimeData.crewMembers[0]?.heartRate || 78}
           activity="EVA Prep"
         />
         <AnimatedAvatar
           name="Member #2"
-          status="critical"
-          heartRate={130}
+          status={realTimeData.crewMembers[1]?.status.toLowerCase() as "normal" | "critical" | "warning"}
+          heartRate={realTimeData.crewMembers[1]?.heartRate || 130}
           activity="Emergency"
         />
       </motion.div>
@@ -85,14 +50,14 @@ const CrewHealthPanel = () => {
         <InteractiveChart
           type="area"
           title="Overall Health Trend"
-          data={healthData}
-          dataKey="health"
+          data={realTimeData.missionCharts.heartRateData}
+          dataKey="rate"
           color="#10b981"
           height={200}
         />
       </motion.div>
       
-      {crewMembers.map((member, index) => (
+      {realTimeData.crewMembers.map((member, index) => (
         <motion.div
           key={member.id}
           initial={{ opacity: 0, y: 20 }}

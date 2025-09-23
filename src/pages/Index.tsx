@@ -5,6 +5,7 @@ import AISuggestionsPanel from "@/components/AISuggestionsPanel";
 import RoverNavigationPanel from "@/components/RoverNavigationPanel";
 import HazardDetectionPanel from "@/components/HazardDetectionPanel";
 import MissionCharts from "@/components/MissionCharts";
+import SolarSystemMap from "@/components/SolarSystemMap";
 import AlertNotification from "@/components/AlertNotification";
 import ParticleSystem from "@/components/ParticleSystem";
 import HolographicDisplay from "@/components/HolographicDisplay";
@@ -12,6 +13,7 @@ import MatrixRain from "@/components/MatrixRain";
 import GlitchText from "@/components/GlitchText";
 import AdvancedHUD from "@/components/AdvancedHUD";
 import QuantumLoader from "@/components/QuantumLoader";
+import { useRealTimeData } from "@/contexts/RealTimeDataContext";
 import spaceBackground from "@/assets/space-background.jpg";
 import { motion } from "framer-motion";
 import { Cpu, Zap, Shield, Activity, Target, Radar } from "lucide-react";
@@ -20,6 +22,7 @@ const Index = () => {
   const [showAlert, setShowAlert] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeNavItem, setActiveNavItem] = useState("crew-health");
+  const realTimeData = useRealTimeData();
 
   const navigationItems = [
     { id: "crew-health", label: "Crew Health" },
@@ -46,7 +49,12 @@ const Index = () => {
                     <Activity className="h-4 w-4 mr-2" />
                     Oxygen Levels
                   </span>
-                  <GlitchText text="CRITICAL" className="text-destructive font-bold" trigger="continuous" intensity="high" />
+                  <GlitchText 
+                    text={realTimeData.systemStatus.oxygenLevels < 80 ? "CRITICAL" : "NORMAL"} 
+                    className={`${realTimeData.systemStatus.oxygenLevels < 80 ? "text-destructive" : "text-success"} font-bold`} 
+                    trigger="continuous" 
+                    intensity="high" 
+                  />
                 </motion.div>
                 <motion.div 
                   className="flex justify-between items-center p-3 bg-muted/10 rounded border-l-4 border-success"
@@ -56,7 +64,7 @@ const Index = () => {
                     <Shield className="h-4 w-4 mr-2" />
                     Medical Supplies
                   </span>
-                  <span className="text-success font-mono">98.7%</span>
+                  <span className="text-success font-mono">{realTimeData.systemStatus.medicalSupplies.toFixed(1)}%</span>
                 </motion.div>
                 <motion.div 
                   className="flex justify-between items-center p-3 bg-muted/10 rounded border-l-4 border-primary"
@@ -66,9 +74,11 @@ const Index = () => {
                     <Zap className="h-4 w-4 mr-2" />
                     Emergency Systems
                   </span>
-                  <span className="text-success font-mono flex items-center">
+                  <span className={`font-mono flex items-center ${
+                    realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" ? "text-success" : "text-warning"
+                  }`}>
                     <QuantumLoader size="sm" color="primary" />
-                    <span className="ml-2">ONLINE</span>
+                    <span className="ml-2">{realTimeData.systemStatus.emergencySystemsStatus}</span>
                   </span>
                 </motion.div>
               </div>
@@ -139,14 +149,14 @@ const Index = () => {
                     <GlitchText text="RUNNING" className="ml-2" trigger="continuous" intensity="low" />
                   </div>
                 </motion.div>
-                <motion.div 
-                  className="p-4 bg-gradient-to-br from-primary/20 to-accent/10 rounded-lg border border-primary/40"
-                  whileHover={{ rotateY: -5, scale: 1.02 }}
-                  style={{ transformStyle: "preserve-3d" }}
-                >
-                  <div className="text-sm text-muted-foreground mb-2">Prediction Accuracy</div>
-                  <div className="text-lg font-medium text-primary font-mono">94.7%</div>
-                </motion.div>
+              <motion.div 
+                className="p-4 bg-gradient-to-br from-primary/20 to-accent/10 rounded-lg border border-primary/40"
+                whileHover={{ rotateY: -5, scale: 1.02 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-sm text-muted-foreground mb-2">Prediction Accuracy</div>
+                <div className="text-lg font-medium text-primary font-mono">{realTimeData.systemStatus.predictionAccuracy.toFixed(1)}%</div>
+              </motion.div>
               </div>
               <div className="space-y-4">
                 <motion.div 
@@ -154,8 +164,16 @@ const Index = () => {
                   whileHover={{ rotateY: 5, scale: 1.02 }}
                   style={{ transformStyle: "preserve-3d" }}
                 >
-                  <div className="text-sm text-muted-foreground mb-2">Processing Power</div>
-                  <GlitchText text="HIGH LOAD" className="text-lg font-medium text-warning" trigger="hover" intensity="medium" />
+                <div className="text-sm text-muted-foreground mb-2">Processing Power</div>
+                <GlitchText 
+                  text={realTimeData.systemStatus.processingPower > 90 ? "HIGH LOAD" : realTimeData.systemStatus.processingPower > 70 ? "MODERATE" : "LOW"}
+                  className={`text-lg font-medium ${
+                    realTimeData.systemStatus.processingPower > 90 ? "text-warning" : 
+                    realTimeData.systemStatus.processingPower > 70 ? "text-primary" : "text-success"
+                  }`}
+                  trigger="hover" 
+                  intensity="medium" 
+                />
                 </motion.div>
                 <motion.div 
                   className="p-4 bg-gradient-to-br from-success/20 to-primary/10 rounded-lg border border-success/40"
@@ -182,13 +200,20 @@ const Index = () => {
               >
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-muted-foreground">Overall Morale</span>
-                  <GlitchText text="EXCELLENT" className="text-success font-bold" trigger="hover" />
+                  <GlitchText 
+                    text={realTimeData.systemStatus.morale > 80 ? "EXCELLENT" : realTimeData.systemStatus.morale > 60 ? "GOOD" : "NEEDS ATTENTION"}
+                    className={`font-bold ${
+                      realTimeData.systemStatus.morale > 80 ? "text-success" : 
+                      realTimeData.systemStatus.morale > 60 ? "text-primary" : "text-warning"
+                    }`}
+                    trigger="hover" 
+                  />
                 </div>
                 <div className="w-full bg-muted/30 rounded-full h-3 overflow-hidden">
                   <motion.div
                     className="bg-gradient-to-r from-success to-primary h-3 rounded-full"
                     initial={{ width: 0 }}
-                    animate={{ width: "85%" }}
+                    animate={{ width: `${realTimeData.systemStatus.morale}%` }}
                     transition={{ duration: 2, ease: "easeOut" }}
                   />
                 </div>
@@ -295,57 +320,76 @@ const Index = () => {
 
         {/* Enhanced Mission Status Bar */}
         <HolographicDisplay title="MISSION COMMAND OVERVIEW" className="mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="p-3 bg-primary/10 rounded-lg border border-primary/30"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Real-time Mission Status */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-8">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="p-3 bg-primary/10 rounded-lg border border-primary/30"
+                >
+                  <div className="text-sm text-muted-foreground">Mission Time</div>
+                  <GlitchText 
+                    text={currentTime.toLocaleTimeString()}
+                    className="text-lg font-mono text-primary"
+                    trigger="continuous"
+                    intensity="low"
+                  />
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="p-3 bg-accent/10 rounded-lg border border-accent/30"
+                >
+                  <div className="text-sm text-muted-foreground">Sol (Mars Day)</div>
+                  <div className="text-lg font-mono text-accent flex items-center">
+                    <QuantumLoader size="sm" />
+                    <span className="ml-2">1247</span>
+                  </div>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="p-3 bg-warning/10 rounded-lg border border-warning/30"
+                >
+                  <div className="text-sm text-muted-foreground">Communication Delay</div>
+                  <GlitchText 
+                    text="14m 32s"
+                    className="text-lg font-mono text-warning"
+                    trigger="hover"
+                    intensity="medium"
+                  />
+                </motion.div>
+              </div>
+              <motion.div 
+                className={`text-right p-3 rounded-lg border ${
+                  realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" 
+                    ? "bg-success/10 border-success/30" 
+                    : "bg-warning/10 border-warning/30"
+                }`}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 25px hsl(var(--success) / 0.4)" }}
               >
-                <div className="text-sm text-muted-foreground">Mission Time</div>
-                <GlitchText 
-                  text={currentTime.toLocaleTimeString()}
-                  className="text-lg font-mono text-primary"
-                  trigger="continuous"
-                  intensity="low"
-                />
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="p-3 bg-accent/10 rounded-lg border border-accent/30"
-              >
-                <div className="text-sm text-muted-foreground">Sol (Mars Day)</div>
-                <div className="text-lg font-mono text-accent flex items-center">
-                  <QuantumLoader size="sm" />
-                  <span className="ml-2">1247</span>
+                <div className="text-sm text-muted-foreground">System Status</div>
+                <div className={`text-lg font-medium flex items-center ${
+                  realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" ? "text-success" : "text-warning"
+                }`}>
+                  <motion.div
+                    className={`w-3 h-3 rounded-full mr-2 ${
+                      realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" ? "bg-success" : "bg-warning"
+                    }`}
+                    animate={{ opacity: [1, 0.3, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  {realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" 
+                    ? "All Systems Nominal" 
+                    : "Maintenance Mode"
+                  }
                 </div>
               </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="p-3 bg-warning/10 rounded-lg border border-warning/30"
-              >
-                <div className="text-sm text-muted-foreground">Communication Delay</div>
-                <GlitchText 
-                  text="14m 32s"
-                  className="text-lg font-mono text-warning"
-                  trigger="hover"
-                  intensity="medium"
-                />
-              </motion.div>
             </div>
-            <motion.div 
-              className="text-right p-3 bg-success/10 rounded-lg border border-success/30"
-              whileHover={{ scale: 1.05, boxShadow: "0 0 25px hsl(var(--success) / 0.4)" }}
-            >
-              <div className="text-sm text-muted-foreground">System Status</div>
-              <div className="text-lg font-medium text-success flex items-center">
-                <motion.div
-                  className="w-3 h-3 bg-success rounded-full mr-2"
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                All Systems Nominal
-              </div>
-            </motion.div>
+            
+            {/* Solar System Map */}
+            <div className="lg:col-span-1">
+              <SolarSystemMap />
+            </div>
           </div>
         </HolographicDisplay>
 
