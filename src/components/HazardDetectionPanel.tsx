@@ -1,4 +1,5 @@
 import StatusCard from "./StatusCard";
+import AsteroidScanner from "./AsteroidScanner";
 import { Shield, AlertTriangle, Zap } from "lucide-react";
 
 const HazardDetectionPanel = () => {
@@ -21,6 +22,7 @@ const HazardDetectionPanel = () => {
 
   return (
     <div className="space-y-4">
+      <AsteroidScanner />
       <StatusCard title="Hazards & Debris" alert={true}>
         <div className="space-y-4">
           {hazards.map((hazard, index) => (

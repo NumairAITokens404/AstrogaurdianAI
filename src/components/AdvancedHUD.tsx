@@ -41,9 +41,9 @@ const AdvancedHUD = () => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
       
-      // Check if mouse is near left panel (within 300px from left edge) or right panel (within 300px from right edge)
-      const nearLeftPanel = e.clientX < 300;
-      const nearRightPanel = e.clientX > window.innerWidth - 300;
+      // Check if mouse is near left panel (within 150px from left edge) or right panel (within 150px from right edge)
+      const nearLeftPanel = e.clientX < 150;
+      const nearRightPanel = e.clientX > window.innerWidth - 150;
       const inUpperArea = e.clientY < window.innerHeight * 0.7; // Only in upper 70% of screen
       
       setPanelsVisible((nearLeftPanel || nearRightPanel) && inUpperArea);

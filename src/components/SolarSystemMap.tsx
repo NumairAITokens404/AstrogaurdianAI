@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import StatusCard from "./StatusCard";
 import GlitchText from "./GlitchText";
+import { ZoomIn, ZoomOut, Rocket } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface Planet {
   name: string;
@@ -13,6 +15,7 @@ interface Planet {
 }
 
 const SolarSystemMap = () => {
+  const [zoomLevel, setZoomLevel] = useState(1);
   const [planets, setPlanets] = useState<Planet[]>([
     { name: "Sun", distance: 1, color: "#FDB813", size: 20, orbitalPeriod: 0, angle: 0 },
     { name: "Mercury", distance: 0.4, color: "#8C7853", size: 4, orbitalPeriod: 88, angle: 0 },
@@ -55,10 +58,18 @@ const SolarSystemMap = () => {
   const calculatePlanetPosition = (planet: Planet) => {
     const centerX = 200;
     const centerY = 200;
-    const radius = planet.distance * 25; // Scale for visualization
+    const radius = planet.distance * 25 * zoomLevel; // Scale for visualization with zoom
     const x = centerX + radius * Math.cos((planet.angle * Math.PI) / 180);
     const y = centerY + radius * Math.sin((planet.angle * Math.PI) / 180);
     return { x, y };
+  };
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.5, 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.5, 0.5));
   };
 
   return (
@@ -87,6 +98,31 @@ const SolarSystemMap = () => {
           </div>
         </div>
 
+        {/* Zoom Controls */}
+        <div className="flex justify-center space-x-2 mb-4">
+          <Button
+            onClick={handleZoomOut}
+            disabled={zoomLevel <= 0.5}
+            size="sm"
+            variant="outline"
+            className="border-primary/30 hover:bg-primary/10"
+          >
+            <ZoomOut className="h-4 w-4" />
+          </Button>
+          <div className="px-3 py-1 bg-muted/20 rounded border border-border/30 text-sm font-mono">
+            {zoomLevel.toFixed(1)}x
+          </div>
+          <Button
+            onClick={handleZoomIn}
+            disabled={zoomLevel >= 3}
+            size="sm"
+            variant="outline"
+            className="border-primary/30 hover:bg-primary/10"
+          >
+            <ZoomIn className="h-4 w-4" />
+          </Button>
+        </div>
+
         {/* Solar System Visualization */}
         <div className="relative">
           <motion.svg
@@ -104,7 +140,7 @@ const SolarSystemMap = () => {
                 key={`orbit-${planet.name}`}
                 cx="200"
                 cy="200"
-                r={planet.distance * 25}
+                r={planet.distance * 25 * zoomLevel}
                 fill="none"
                 stroke="hsl(var(--muted-foreground))"
                 strokeWidth="1"
@@ -180,6 +216,62 @@ const SolarSystemMap = () => {
               animate={{ pathLength: 1 }}
               transition={{ duration: 2, delay: 1 }}
             />
+
+            {/* Space Shuttle Icon at Maximum Zoom */}
+            {zoomLevel >= 3 && (
+              <motion.g
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.5 }}
+              >
+                {/* Shuttle moving towards Mars */}
+                <motion.g
+                  animate={{
+                    x: [
+                      calculatePlanetPosition(planets.find(p => p.name === "Earth")!).x - 200,
+                      calculatePlanetPosition(planets.find(p => p.name === "Mars")!).x - 200
+                    ],
+                    y: [
+                      calculatePlanetPosition(planets.find(p => p.name === "Earth")!).y - 200,
+                      calculatePlanetPosition(planets.find(p => p.name === "Mars")!).y - 200
+                    ]
+                  }}
+                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                >
+                  {/* Simple shuttle representation */}
+                  <rect
+                    x="195"
+                    y="195"
+                    width="10"
+                    height="4"
+                    fill="hsl(var(--primary))"
+                    rx="2"
+                  />
+                  <polygon
+                    points="205,197 210,195 210,199"
+                    fill="hsl(var(--accent))"
+                  />
+                  <circle
+                    cx="200"
+                    cy="197"
+                    r="1"
+                    fill="hsl(var(--warning))"
+                    className="animate-pulse"
+                  />
+                </motion.g>
+                
+                {/* Shuttle label */}
+                <text
+                  x="200"
+                  y="220"
+                  textAnchor="middle"
+                  className="text-xs fill-current text-primary font-mono"
+                  fontSize="8"
+                >
+                  🚀 MISSION SHUTTLE
+                </text>
+              </motion.g>
+            )}
           </motion.svg>
         </div>
 

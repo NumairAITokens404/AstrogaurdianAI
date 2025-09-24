@@ -7,6 +7,8 @@ import HazardDetectionPanel from "@/components/HazardDetectionPanel";
 import MissionCharts from "@/components/MissionCharts";
 import SolarSystemMap from "@/components/SolarSystemMap";
 import AlertNotification from "@/components/AlertNotification";
+import InteractiveMoodCompanion from "@/components/InteractiveMoodCompanion";
+import DigitalTwinSimulation from "@/components/DigitalTwinSimulation";
 import ParticleSystem from "@/components/ParticleSystem";
 import HolographicDisplay from "@/components/HolographicDisplay";
 import MatrixRain from "@/components/MatrixRain";
@@ -131,123 +133,9 @@ const Index = () => {
           </motion.div>
         );
       case "digital-twin":
-        return (
-          <HolographicDisplay title="QUANTUM DIGITAL TWIN MATRIX">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <motion.div 
-                  className="p-4 bg-gradient-to-br from-success/20 to-primary/10 rounded-lg border border-success/40"
-                  whileHover={{ rotateY: 5, scale: 1.02 }}
-                  style={{ transformStyle: "preserve-3d" }}
-                >
-                  <div className="text-sm text-muted-foreground mb-2 flex items-center">
-                    <Cpu className="h-4 w-4 mr-2" />
-                    Simulation Status
-                  </div>
-                  <div className="text-lg font-medium text-success flex items-center">
-                    <QuantumLoader size="sm" color="primary" />
-                    <GlitchText text="RUNNING" className="ml-2" trigger="continuous" intensity="low" />
-                  </div>
-                </motion.div>
-              <motion.div 
-                className="p-4 bg-gradient-to-br from-primary/20 to-accent/10 rounded-lg border border-primary/40"
-                whileHover={{ rotateY: -5, scale: 1.02 }}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <div className="text-sm text-muted-foreground mb-2">Prediction Accuracy</div>
-                <div className="text-lg font-medium text-primary font-mono">{realTimeData.systemStatus.predictionAccuracy.toFixed(1)}%</div>
-              </motion.div>
-              </div>
-              <div className="space-y-4">
-                <motion.div 
-                  className="p-4 bg-gradient-to-br from-warning/20 to-destructive/10 rounded-lg border border-warning/40"
-                  whileHover={{ rotateY: 5, scale: 1.02 }}
-                  style={{ transformStyle: "preserve-3d" }}
-                >
-                <div className="text-sm text-muted-foreground mb-2">Processing Power</div>
-                <GlitchText 
-                  text={realTimeData.systemStatus.processingPower > 90 ? "HIGH LOAD" : realTimeData.systemStatus.processingPower > 70 ? "MODERATE" : "LOW"}
-                  className={`text-lg font-medium ${
-                    realTimeData.systemStatus.processingPower > 90 ? "text-warning" : 
-                    realTimeData.systemStatus.processingPower > 70 ? "text-primary" : "text-success"
-                  }`}
-                  trigger="hover" 
-                  intensity="medium" 
-                />
-                </motion.div>
-                <motion.div 
-                  className="p-4 bg-gradient-to-br from-success/20 to-primary/10 rounded-lg border border-success/40"
-                  whileHover={{ rotateY: -5, scale: 1.02 }}
-                  style={{ transformStyle: "preserve-3d" }}
-                >
-                  <div className="text-sm text-muted-foreground mb-2">Data Sync</div>
-                  <div className="text-lg font-medium text-success flex items-center">
-                    <div className="w-2 h-2 bg-success rounded-full animate-pulse mr-2" />
-                    Real-time
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </HolographicDisplay>
-        );
+        return <DigitalTwinSimulation />;
       case "mood-companion":
-        return (
-          <HolographicDisplay title="PSYCHOLOGICAL WELLNESS MATRIX">
-            <div className="space-y-6">
-              <motion.div 
-                className="p-4 bg-gradient-to-r from-success/20 to-primary/10 rounded-lg border border-success/40"
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-muted-foreground">Overall Morale</span>
-                  <GlitchText 
-                    text={realTimeData.systemStatus.morale > 80 ? "EXCELLENT" : realTimeData.systemStatus.morale > 60 ? "GOOD" : "NEEDS ATTENTION"}
-                    className={`font-bold ${
-                      realTimeData.systemStatus.morale > 80 ? "text-success" : 
-                      realTimeData.systemStatus.morale > 60 ? "text-primary" : "text-warning"
-                    }`}
-                    trigger="hover" 
-                  />
-                </div>
-                <div className="w-full bg-muted/30 rounded-full h-3 overflow-hidden">
-                  <motion.div
-                    className="bg-gradient-to-r from-success to-primary h-3 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${realTimeData.systemStatus.morale}%` }}
-                    transition={{ duration: 2, ease: "easeOut" }}
-                  />
-                </div>
-              </motion.div>
-              <motion.div 
-                className="p-4 bg-gradient-to-br from-accent/10 to-primary/10 rounded-lg border border-accent/30"
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="text-sm text-muted-foreground mb-3 flex items-center">
-                  <Cpu className="h-4 w-4 mr-2" />
-                  AI Companion Messages
-                </div>
-                <div className="space-y-3 text-sm">
-                  <motion.div 
-                    className="text-foreground p-2 bg-success/10 rounded border-l-2 border-success"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <GlitchText text="Outstanding performance on Mission Objective Alpha-7!" />
-                  </motion.div>
-                  <motion.div 
-                    className="text-muted-foreground p-2 bg-primary/5 rounded border-l-2 border-primary"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    "Optimal rest cycle scheduled in 2.3 hours. Prepare for regenerative hibernation."
-                  </motion.div>
-                </div>
-              </motion.div>
-            </div>
-          </HolographicDisplay>
-        );
+        return <InteractiveMoodCompanion />;
       default:
         return null;
     }
