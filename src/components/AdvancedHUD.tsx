@@ -48,9 +48,9 @@ const AdvancedHUD = () => {
         e.clientY < window.innerHeight * 0.8 // Above bottom area
       );
       
-      // Check if mouse is at the very edge of screen (within 20px from edges)
-      const nearLeftPanel = e.clientX < 20 && !isOverNavigation;
-      const nearRightPanel = e.clientX > window.innerWidth - 20;
+      // Check if mouse is near the edges of screen (within 35px from edges)
+      const nearLeftPanel = e.clientX < 35 && !isOverNavigation;
+      const nearRightPanel = e.clientX > window.innerWidth - 35;
       const inUpperArea = e.clientY < window.innerHeight * 0.7; // Only in upper 70% of screen
       
       setPanelsVisible((nearLeftPanel || nearRightPanel) && inUpperArea);
