@@ -41,9 +41,16 @@ const AdvancedHUD = () => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
       
-      // Check if mouse is near left panel (within 150px from left edge) or right panel (within 150px from right edge)
-      const nearLeftPanel = e.clientX < 150;
-      const nearRightPanel = e.clientX > window.innerWidth - 150;
+      // Check if mouse is over navigation sidebar (avoid showing panels when hovering over navigation)
+      const isOverNavigation = (
+        e.clientX < 200 && // Left sidebar area
+        e.clientY > 100 && // Below header
+        e.clientY < window.innerHeight * 0.8 // Above bottom area
+      );
+      
+      // Check if mouse is near left panel (within 100px from left edge) or right panel (within 100px from right edge)
+      const nearLeftPanel = e.clientX < 100 && !isOverNavigation;
+      const nearRightPanel = e.clientX > window.innerWidth - 100;
       const inUpperArea = e.clientY < window.innerHeight * 0.7; // Only in upper 70% of screen
       
       setPanelsVisible((nearLeftPanel || nearRightPanel) && inUpperArea);
@@ -107,16 +114,16 @@ const AdvancedHUD = () => {
 
       {/* Left Side Stats Panel */}
       <motion.div
-        className="absolute left-0 top-20 w-64 bg-card/20 backdrop-blur-sm border border-border/30 rounded-lg pointer-events-auto"
+        className="absolute left-2 top-20 w-60 bg-card/20 backdrop-blur-sm border border-border/30 rounded-lg pointer-events-auto"
         initial={{ x: -300 }}
         animate={{ 
-          x: panelsVisible ? 0 : -250,
+          x: panelsVisible ? 0 : -240,
           opacity: panelsVisible ? 1 : 0.3
         }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
-        <div className="p-4">
-          <div className="text-sm font-medium text-foreground mb-4 font-mono uppercase tracking-wider">
+        <div className="p-3">
+          <div className="text-sm font-medium text-foreground mb-3 font-mono uppercase tracking-wider">
             System Status
           </div>
           <div className="space-y-2">
@@ -127,7 +134,7 @@ const AdvancedHUD = () => {
             <StatBar label="Battery" value={stats.battery} icon={Battery} color="text-destructive" />
           </div>
           
-          <div className="mt-4 pt-4 border-t border-border/30">
+          <div className="mt-3 pt-3 border-t border-border/30">
             <div className="text-xs text-muted-foreground mb-2">TEMPERATURE</div>
             <div className="font-mono text-lg text-primary">{stats.temperature.toFixed(1)}°C</div>
           </div>
@@ -136,28 +143,28 @@ const AdvancedHUD = () => {
 
       {/* Right Side Threat Panel */}
       <motion.div
-        className="absolute right-0 top-20 w-80 bg-card/20 backdrop-blur-sm border border-border/30 rounded-lg pointer-events-auto"
+        className="absolute right-2 top-20 w-72 bg-card/20 backdrop-blur-sm border border-border/30 rounded-lg pointer-events-auto"
         initial={{ x: 300 }}
         animate={{ 
-          x: panelsVisible ? 0 : 250,
+          x: panelsVisible ? 0 : 240,
           opacity: panelsVisible ? 1 : 0.3
         }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
-        <div className="p-4">
-          <div className="text-sm font-medium text-foreground mb-4 font-mono uppercase tracking-wider">
+        <div className="p-3">
+          <div className="text-sm font-medium text-foreground mb-3 font-mono uppercase tracking-wider">
             Threat Assessment
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {threats.map((threat, index) => (
               <motion.div
                 key={threat.id}
-                className="p-3 bg-muted/20 rounded border border-border/20"
+                className="p-2 bg-muted/20 rounded border border-border/20"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex justify-between items-start mb-1">
                   <div className="font-medium text-sm">{threat.type}</div>
                   <div className={`text-xs px-2 py-1 rounded ${
                     threat.threat === 'High' ? 'bg-destructive/20 text-destructive' :
