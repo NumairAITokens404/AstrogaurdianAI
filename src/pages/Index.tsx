@@ -319,8 +319,18 @@ const Index = () => {
         </div>
 
         {/* Space Shuttle Monitoring Dashboard */}
-        <HolographicDisplay title="SPACE SHUTTLE MONITORING SYSTEM" className="mb-6">
-          <SpaceShuttleMonitoring />
+        <HolographicDisplay title="MISSION COMMAND OVERVIEW" className="mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Space Shuttle Monitoring */}
+            <div className="lg:col-span-1">
+              <SpaceShuttleMonitoring />
+            </div>
+            
+            {/* Solar System Map */}
+            <div className="lg:col-span-1">
+              <SolarSystemMap />
+            </div>
+          </div>
         </HolographicDisplay>
 
         {/* Dashboard Grid */}
