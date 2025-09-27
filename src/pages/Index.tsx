@@ -15,6 +15,7 @@ import MatrixRain from "@/components/MatrixRain";
 import GlitchText from "@/components/GlitchText";
 import AdvancedHUD from "@/components/AdvancedHUD";
 import QuantumLoader from "@/components/QuantumLoader";
+import SpaceShuttleMonitoring from "@/components/SpaceShuttleMonitoring";
 import { useRealTimeData } from "@/contexts/RealTimeDataContext";
 import spaceBackground from "@/assets/space-background.jpg";
 import { motion } from "framer-motion";
@@ -24,6 +25,9 @@ const Index = () => {
   const [showAlert, setShowAlert] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeNavItem, setActiveNavItem] = useState("crew-health");
+  const [communicationDelay, setCommunicationDelay] = useState("14m 32s");
+  const [solDay, setSolDay] = useState(1247);
+  const [earthDay, setEarthDay] = useState(new Date());
   const realTimeData = useRealTimeData();
 
   const navigationItems = [
@@ -148,6 +152,36 @@ const Index = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Communication delay timer (every 3 seconds)
+  useEffect(() => {
+    const generateCommDelay = () => {
+      const minutes = Math.floor(Math.random() * 5) + 12; // 12-16 minutes
+      const seconds = Math.floor(Math.random() * 60); // 0-59 seconds
+      return `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
+    };
+    
+    const timer = setInterval(() => {
+      setCommunicationDelay(generateCommDelay());
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Sol (Mars Day) timer (every 15 seconds)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSolDay(prev => prev + Math.floor(Math.random() * 2)); // Increment by 0 or 1
+    }, 15000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Earth Day timer (every 10 seconds)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setEarthDay(new Date());
+    }, 10000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div 
       className="min-h-screen bg-background relative overflow-hidden"
@@ -207,78 +241,86 @@ const Index = () => {
         )}
 
         {/* Enhanced Mission Status Bar */}
-        <HolographicDisplay title="MISSION COMMAND OVERVIEW" className="mb-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Real-time Mission Status */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-8">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="p-3 bg-primary/10 rounded-lg border border-primary/30"
-                >
-                  <div className="text-sm text-muted-foreground">Mission Time</div>
-                  <GlitchText 
-                    text={currentTime.toLocaleTimeString()}
-                    className="text-lg font-mono text-primary"
-                    trigger="continuous"
-                    intensity="low"
-                  />
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="p-3 bg-accent/10 rounded-lg border border-accent/30"
-                >
-                  <div className="text-sm text-muted-foreground">Sol (Mars Day)</div>
-                  <div className="text-lg font-mono text-accent flex items-center">
-                    <QuantumLoader size="sm" />
-                    <span className="ml-2">1247</span>
-                  </div>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="p-3 bg-warning/10 rounded-lg border border-warning/30"
-                >
-                  <div className="text-sm text-muted-foreground">Communication Delay</div>
-                  <GlitchText 
-                    text="14m 32s"
-                    className="text-lg font-mono text-warning"
-                    trigger="hover"
-                    intensity="medium"
-                  />
-                </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="p-3 bg-primary/10 rounded-lg border border-primary/30"
+            >
+              <div className="text-sm text-muted-foreground">Mission Time</div>
+              <GlitchText 
+                text={currentTime.toLocaleTimeString()}
+                className="text-lg font-mono text-primary"
+                trigger="continuous"
+                intensity="low"
+              />
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="p-3 bg-accent/10 rounded-lg border border-accent/30"
+            >
+              <div className="text-sm text-muted-foreground">Sol (Mars Day)</div>
+              <div className="text-lg font-mono text-accent flex items-center">
+                <QuantumLoader size="sm" />
+                <span className="ml-2">{solDay}</span>
               </div>
-              <motion.div 
-                className={`text-right p-3 rounded-lg border ${
-                  realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" 
-                    ? "bg-success/10 border-success/30" 
-                    : "bg-warning/10 border-warning/30"
-                }`}
-                whileHover={{ scale: 1.05, boxShadow: "0 0 25px hsl(var(--success) / 0.4)" }}
-              >
-                <div className="text-sm text-muted-foreground">System Status</div>
-                <div className={`text-lg font-medium flex items-center ${
-                  realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" ? "text-success" : "text-warning"
-                }`}>
-                  <motion.div
-                    className={`w-3 h-3 rounded-full mr-2 ${
-                      realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" ? "bg-success" : "bg-warning"
-                    }`}
-                    animate={{ opacity: [1, 0.3, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  {realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" 
-                    ? "All Systems Nominal" 
-                    : "Maintenance Mode"
-                  }
-                </div>
-              </motion.div>
-            </div>
-            
-            {/* Solar System Map */}
-            <div className="lg:col-span-1">
-              <SolarSystemMap />
-            </div>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="p-3 bg-warning/10 rounded-lg border border-warning/30"
+            >
+              <div className="text-sm text-muted-foreground">Communication Delay</div>
+              <GlitchText 
+                text={communicationDelay}
+                className="text-lg font-mono text-warning"
+                trigger="hover"
+                intensity="medium"
+              />
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="p-3 bg-success/10 rounded-lg border border-success/30"
+            >
+              <div className="text-sm text-muted-foreground">Earth Day</div>
+              <div className="text-lg font-mono text-success">
+                {earthDay.toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: '2-digit',
+                  year: '2-digit'
+                })}
+              </div>
+            </motion.div>
           </div>
+          <motion.div 
+            className={`text-right p-3 rounded-lg border ${
+              realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" 
+                ? "bg-success/10 border-success/30" 
+                : "bg-warning/10 border-warning/30"
+            }`}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 25px hsl(var(--success) / 0.4)" }}
+          >
+            <div className="text-sm text-muted-foreground">System Status</div>
+            <div className={`text-lg font-medium flex items-center ${
+              realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" ? "text-success" : "text-warning"
+            }`}>
+              <motion.div
+                className={`w-3 h-3 rounded-full mr-2 ${
+                  realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" ? "bg-success" : "bg-warning"
+                }`}
+                animate={{ opacity: [1, 0.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              {realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" 
+                ? "All Systems Nominal" 
+                : "Maintenance Mode"
+              }
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Space Shuttle Monitoring Dashboard */}
+        <HolographicDisplay title="SPACE SHUTTLE MONITORING SYSTEM" className="mb-6">
+          <SpaceShuttleMonitoring />
         </HolographicDisplay>
 
         {/* Dashboard Grid */}
