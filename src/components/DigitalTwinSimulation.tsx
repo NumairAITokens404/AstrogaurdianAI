@@ -33,7 +33,7 @@ const DigitalTwinSimulation = () => {
       gravity: 0.378,
       radiation: 95.7,
       habitability: 'Hostile',
-      icon: '☿️'
+      icon: '🟤'
     },
     venus: {
       name: 'Venus',
@@ -44,7 +44,7 @@ const DigitalTwinSimulation = () => {
       gravity: 0.907,
       radiation: 73.2,
       habitability: 'Hostile',
-      icon: '♀️'
+      icon: '🌕'
     },
     earth: {
       name: 'Earth',
@@ -77,7 +77,7 @@ const DigitalTwinSimulation = () => {
       gravity: 2.36,
       radiation: 87.3,
       habitability: 'Hostile',
-      icon: '🪐'
+      icon: '🟠'
     },
     saturn: {
       name: 'Saturn',
