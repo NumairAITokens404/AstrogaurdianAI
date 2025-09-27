@@ -34,6 +34,29 @@ const AISuggestionsPanel = () => {
     }
   ]);
 
+  const generateNewSuggestions = () => {
+    const newSuggestionsList = [
+      [
+        { id: "4", action: "Adjust habitat pressure", confidence: 88, status: "pending" as const },
+        { id: "5", action: "Activate backup life support", confidence: 67, status: "pending" as const },
+        { id: "6", action: "Schedule maintenance check", confidence: 73, status: "pending" as const }
+      ],
+      [
+        { id: "7", action: "Optimize power distribution", confidence: 91, status: "pending" as const },
+        { id: "8", action: "Recalibrate sensors", confidence: 56, status: "pending" as const },
+        { id: "9", action: "Update navigation protocols", confidence: 84, status: "pending" as const }
+      ],
+      [
+        { id: "10", action: "Enhance communication array", confidence: 77, status: "pending" as const },
+        { id: "11", action: "Initiate emergency protocols", confidence: 93, status: "pending" as const },
+        { id: "12", action: "Deploy exploration drone", confidence: 65, status: "pending" as const }
+      ]
+    ];
+    
+    const randomIndex = Math.floor(Math.random() * newSuggestionsList.length);
+    setSuggestions(newSuggestionsList[randomIndex]);
+  };
+
   const handleApprove = (id: string) => {
     setSuggestions(prev => prev.map(s => 
       s.id === id ? { ...s, status: "approved" as const } : s
@@ -104,6 +127,7 @@ const AISuggestionsPanel = () => {
         <Button 
           className="w-full mt-4 bg-secondary hover:bg-secondary/80 text-primary border border-primary/30"
           variant="outline"
+          onClick={generateNewSuggestions}
         >
           Simulate
         </Button>

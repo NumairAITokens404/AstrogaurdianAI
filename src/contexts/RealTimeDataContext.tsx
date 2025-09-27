@@ -192,7 +192,7 @@ export const RealTimeDataProvider: React.FC<{ children: ReactNode }> = ({ childr
           ],
           heartRateData: [
             ...prevData.missionCharts.heartRateData.slice(1),
-            { time: generateTimeStamp(0), rate: updatedCrewMembers[0].heartRate }
+            { time: generateTimeStamp(0), rate: updatedCrewMembers[1].heartRate } // Use crew member #2's heart rate
           ],
           systemPerformance: [
             ...prevData.missionCharts.systemPerformance.slice(1),

@@ -183,37 +183,6 @@ const AdvancedHUD = () => {
         </div>
       </motion.div>
 
-      {/* Bottom Navigation */}
-      <motion.div
-        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-card/20 backdrop-blur-sm border border-border/30 rounded-t-lg pointer-events-auto"
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-      >
-        <div className="flex items-center px-8 py-3 space-x-6">
-          <motion.button
-            className="p-2 rounded bg-primary/20 text-primary hover:bg-primary/30 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Activity className="h-4 w-4" />
-          </motion.button>
-          <motion.button
-            className="p-2 rounded bg-muted/20 text-muted-foreground hover:bg-muted/30 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Shield className="h-4 w-4" />
-          </motion.button>
-          <motion.button
-            className="p-2 rounded bg-muted/20 text-muted-foreground hover:bg-muted/30 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Zap className="h-4 w-4" />
-          </motion.button>
-        </div>
-      </motion.div>
 
       {/* Crosshair Overlay */}
       <div className="absolute inset-0 pointer-events-none">

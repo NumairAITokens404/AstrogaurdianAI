@@ -31,12 +31,6 @@ const MissionHeader = () => {
         <Badge variant="outline" className="text-success border-success/50 bg-success/10">
           OPERATIONAL
         </Badge>
-        <Button variant="ghost" size="sm">
-          <Settings className="h-4 w-4" />
-        </Button>
-        <Button variant="ghost" size="sm">
-          <Menu className="h-4 w-4" />
-        </Button>
         </div>
       </header>
       

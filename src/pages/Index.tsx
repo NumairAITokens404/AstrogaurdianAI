@@ -286,7 +286,7 @@ const Index = () => {
           {/* Left Sidebar */}
           <div className="lg:col-span-2 space-y-4">
             <div className="space-y-3 p-4 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
-              <div className="text-sm font-medium text-muted-foreground">Navigation</div>
+              <div className="text-sm font-medium text-muted-foreground">Navigation Menu</div>
               <div className="space-y-2 text-sm">
                 {navigationItems.map((item) => (
                   <div
@@ -316,45 +316,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Enhanced Floating Elements */}
-        <div className="fixed bottom-8 right-8 pointer-events-none">
-          <motion.div
-            className="relative"
-            animate={{ 
-              y: [0, -10, 0],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ 
-              duration: 4, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-          >
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 shadow-2xl opacity-80" />
-            <motion.div
-              className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-orange-300/40 to-transparent"
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 0.8, 0.5]
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity 
-              }}
-            />
-            {/* Orbital rings */}
-            <motion.div
-              className="absolute -inset-4 border border-orange-400/30 rounded-full"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div
-              className="absolute -inset-8 border border-orange-400/20 rounded-full"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            />
-          </motion.div>
-        </div>
 
         {/* Floating Data Cubes */}
         <div className="fixed top-20 right-20 pointer-events-none">
