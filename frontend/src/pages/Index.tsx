@@ -28,9 +28,12 @@ const Index = () => {
   const [communicationDelay, setCommunicationDelay] = useState("14m 32s");
   const [solDay, setSolDay] = useState(1247);
   const [earthDay, setEarthDay] = useState(new Date());
+  const [prompt, setPrompt]= useState("");
+  const [response, setResponse]= useState("");
   const realTimeData = useRealTimeData();
 
   const navigationItems = [
+    { id: "astroguard-ai", label: "AstroGuardian AI" },
     { id: "crew-health", label: "Crew Health" },
     { id: "rover-navigation", label: "Rover Navigation" },
     { id: "hazards", label: "Hazards & Debris" },
@@ -41,6 +44,21 @@ const Index = () => {
 
   const renderMainContent = () => {
     switch (activeNavItem) {
+      case "astroguard-ai":
+        function handleSubmit(){
+          //make API Call.
+          console.log("AI Response parsing from Gemini")
+        }
+      return (
+        
+        <div>
+          <h2>AstroGuardian AI Coming Soon...</h2>
+          <input value={prompt} placeholder="How can I assist you AstroBuddy!" type="text" onChange={(e)=> setPrompt(e.target.value)}></input>
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+      )
+        break;
+
       case "crew-health":
         return (
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
