@@ -29,7 +29,7 @@ app.post("/api/ai/chat", async (req, res) => {
       return res.status(400).json({ error: "'message' is required in body" });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
     const systemPrompt =
       "You are AstroGuardian — the mission copilot. Be concise, safety-focused, and helpful.";
 
