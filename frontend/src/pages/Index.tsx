@@ -8,6 +8,7 @@ import MissionCharts from "@/components/MissionCharts";
 import SolarSystemMap from "@/components/SolarSystemMap";
 import AlertNotification from "@/components/AlertNotification";
 import InteractiveMoodCompanion from "@/components/InteractiveMoodCompanion";
+import AstroGuardianAI from "@/components/AstroGuardianAI";
 import DigitalTwinSimulation from "@/components/DigitalTwinSimulation";
 import ParticleSystem from "@/components/ParticleSystem";
 import HolographicDisplay from "@/components/HolographicDisplay";
@@ -45,19 +46,7 @@ const Index = () => {
   const renderMainContent = () => {
     switch (activeNavItem) {
       case "astroguard-ai":
-        function handleSubmit(){
-          //make API Call.
-          console.log("AI Response parsing from Gemini")
-        }
-      return (
-        
-        <div>
-          <h2>AstroGuardian AI Coming Soon...</h2>
-          <input value={prompt} placeholder="How can I assist you AstroBuddy!" type="text" onChange={(e)=> setPrompt(e.target.value)}></input>
-          <button onClick={handleSubmit}>Submit</button>
-        </div>
-      )
-        break;
+        return <AstroGuardianAI />;
 
       case "crew-health":
         return (
