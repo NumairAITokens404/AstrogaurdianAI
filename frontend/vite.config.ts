@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     allowedHosts: [
       "snap-canvas-explore.onrender.com", // Add the host here
+      "https://snap-canvas-explore-astrogaurdian.onrender.com"
     ],
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
