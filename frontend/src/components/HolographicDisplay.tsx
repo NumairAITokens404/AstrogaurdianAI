@@ -20,7 +20,7 @@ const HolographicDisplay = ({ title, children, className = "" }: HolographicDisp
 
   return (
     <motion.div
-      className={`relative p-6 bg-gradient-to-br from-primary/5 to-accent/5 backdrop-blur-md rounded-lg border border-primary/30 overflow-hidden ${className}`}
+      className={`relative p-6 glass overflow-hidden ${className}`}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
