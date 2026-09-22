@@ -14,8 +14,8 @@ const StatusCard = ({ title, children, className, alert, glowEffect }: StatusCar
   return (
     <Card 
       className={cn(
-        "bg-gradient-card border-border/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/30",
-        alert && "border-destructive/50 shadow-glow-danger",
+        "glass transition-all duration-300 hover:glass-strong",
+        alert && "border-destructive/50 shadow-[0_0_20px_hsl(var(--destructive)/0.4)]",
         glowEffect && "animate-pulse-glow",
         className
       )}

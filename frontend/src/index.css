@@ -55,7 +55,7 @@ All colors MUST be HSL.
     /* Rounded elements */
     --radius: 0.75rem;
 
-    /* Custom space gradients */
+  /* Custom space gradients */
     --gradient-space: linear-gradient(135deg, hsl(222 47% 4%), hsl(235 39% 7%));
     --gradient-card: linear-gradient(135deg, hsl(223 44% 8%), hsl(223 44% 12%));
     --gradient-glow: linear-gradient(135deg, hsl(194 87% 65% / 0.1), hsl(194 87% 65% / 0.05));
@@ -64,6 +64,11 @@ All colors MUST be HSL.
     --glow-primary: 0 0 20px hsl(194 87% 65% / 0.3);
     --glow-warning: 0 0 20px hsl(38 95% 62% / 0.4);
     --glow-danger: 0 0 20px hsl(0 72% 51% / 0.4);
+    
+    /* Glassmorphism */
+    --glass-bg: hsl(223 44% 8% / 0.4);
+    --glass-border: hsl(194 87% 65% / 0.1);
+    --glass-shadow: 0 8px 32px 0 hsl(0 0% 0% / 0.37);
     
     /* Animation durations */
     --transition-fast: 0.15s ease;
@@ -287,5 +292,36 @@ All colors MUST be HSL.
   @keyframes glitch-2 {
     0%, 20%, 21%, 62%, 63%, 99%, 100% { transform: translate(0); }
     21%, 62% { transform: translate(2px, 0); }
+  }
+
+  /* Glassmorphism effect */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-strong {
+    background: hsl(223 44% 8% / 0.6);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid hsl(194 87% 65% / 0.15);
+    box-shadow: 0 8px 32px 0 hsl(0 0% 0% / 0.5);
+  }
+
+  /* Scroll fade-in animation */
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

@@ -14,10 +14,11 @@ import ParticleSystem from "@/components/ParticleSystem";
 import HolographicDisplay from "@/components/HolographicDisplay";
 import MatrixRain from "@/components/MatrixRain";
 import GlitchText from "@/components/GlitchText";
-import AdvancedHUD from "@/components/AdvancedHUD";
 import QuantumLoader from "@/components/QuantumLoader";
 import SpaceShuttleMonitoring from "@/components/SpaceShuttleMonitoring";
+import CriticalAlertsPanel from "@/components/CriticalAlertsPanel";
 import { useRealTimeData } from "@/contexts/RealTimeDataContext";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import spaceBackground from "@/assets/space-background.jpg";
 import { motion } from "framer-motion";
 import { Cpu, Zap, Shield, Activity, Target, Radar } from "lucide-react";
@@ -203,8 +204,8 @@ const Index = () => {
       <ParticleSystem />
       <MatrixRain />
       
-      {/* Advanced HUD Overlay */}
-      <AdvancedHUD />
+      {/* Critical Alerts Panel */}
+      <CriticalAlertsPanel />
       
       {/* Animated scan lines */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -248,11 +249,16 @@ const Index = () => {
         )}
 
         {/* Enhanced Mission Status Bar */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"
+        >
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="p-3 bg-primary/10 rounded-lg border border-primary/30"
+              className="p-3 glass rounded-lg"
             >
               <div className="text-sm text-muted-foreground">Mission Time</div>
               <GlitchText 
@@ -264,7 +270,7 @@ const Index = () => {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="p-3 bg-accent/10 rounded-lg border border-accent/30"
+              className="p-3 glass rounded-lg"
             >
               <div className="text-sm text-muted-foreground">Sol (Mars Day)</div>
               <div className="text-lg font-mono text-accent flex items-center">
@@ -274,7 +280,7 @@ const Index = () => {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="p-3 bg-warning/10 rounded-lg border border-warning/30"
+              className="p-3 glass rounded-lg"
             >
               <div className="text-sm text-muted-foreground">Communication Delay</div>
               <GlitchText 
@@ -286,7 +292,7 @@ const Index = () => {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="p-3 bg-success/10 rounded-lg border border-success/30"
+              className="p-3 glass rounded-lg"
             >
               <div className="text-sm text-muted-foreground">Earth Day</div>
               <div className="text-lg font-mono text-success">
@@ -299,12 +305,8 @@ const Index = () => {
             </motion.div>
           </div>
           <motion.div 
-            className={`text-right p-3 rounded-lg border ${
-              realTimeData.systemStatus.emergencySystemsStatus === "ONLINE" 
-                ? "bg-success/10 border-success/30" 
-                : "bg-warning/10 border-warning/30"
-            }`}
-            whileHover={{ scale: 1.05, boxShadow: "0 0 25px hsl(var(--success) / 0.4)" }}
+            className="text-right p-3 glass rounded-lg"
+            whileHover={{ scale: 1.05 }}
           >
             <div className="text-sm text-muted-foreground">System Status</div>
             <div className={`text-lg font-medium flex items-center ${
@@ -323,10 +325,16 @@ const Index = () => {
               }
             </div>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Space Shuttle Monitoring Dashboard */}
-        <HolographicDisplay title="MISSION COMMAND OVERVIEW" className="mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <HolographicDisplay title="MISSION COMMAND OVERVIEW" className="mb-6 glass-strong">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Space Shuttle Monitoring */}
             <div className="lg:col-span-1">
@@ -339,12 +347,19 @@ const Index = () => {
             </div>
           </div>
         </HolographicDisplay>
+        </motion.div>
 
         {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-12 gap-6"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
           {/* Left Sidebar */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="space-y-3 p-4 bg-card/20 backdrop-blur-sm rounded-lg border border-border/30">
+            <div className="space-y-3 p-4 glass rounded-lg">
               <div className="text-sm font-medium text-muted-foreground">Navigation Menu</div>
               <div className="space-y-2 text-sm">
                 {navigationItems.map((item) => (
@@ -373,7 +388,7 @@ const Index = () => {
           <div className="lg:col-span-3">
             <AISuggestionsPanel />
           </div>
-        </div>
+        </motion.div>
 
 
         {/* Floating Data Cubes */}
