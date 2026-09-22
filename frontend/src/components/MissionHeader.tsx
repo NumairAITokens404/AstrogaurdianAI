@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 
 const MissionHeader = () => {
   return (
-    <div>
-      <header className="flex items-center justify-between p-6 border-b border-border/30 bg-card/50 backdrop-blur-md">
+    <div className="glass-hero">
+      <header className="flex items-center justify-between p-6 border-b border-border/30 glass inner-hairline rounded-b-xl">
         <div className="flex items-center space-x-6">
           <motion.h1 
             className="text-2xl font-bold text-primary"
@@ -36,7 +36,7 @@ const MissionHeader = () => {
       
       {/* AstroGuardian Greeting */}
       <motion.div 
-        className="p-6 bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border-b border-primary/30"
+        className="p-6 glass rounded-b-xl border-t-0 edge-highlight"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.6, duration: 0.8 }}

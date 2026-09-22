@@ -289,7 +289,7 @@ const SpaceShuttleMonitoring = () => {
         </div>
       </div>
 
-      {/* Critical Alerts */}
+      {/* Critical Alerts
       {rooms.filter(r => r.status === 'danger').length > 0 && (
         <motion.div
           className="p-4 bg-destructive/10 border border-destructive/30 rounded-lg"
@@ -308,7 +308,7 @@ const SpaceShuttleMonitoring = () => {
             ))}
           </div>
         </motion.div>
-      )}
+      )} */}
     </div>
   );
 };
