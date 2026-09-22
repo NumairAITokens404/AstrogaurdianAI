@@ -81,7 +81,7 @@ const AdvancedHUD = () => {
   );
 
   return (
-    <div className="fixed top-4 left-4 right-4 bottom-4 pointer-events-none z-50">
+    <div className="hidden">
       {/* Top HUD Bar */}
       <motion.div
         className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-background/80 to-transparent pointer-events-auto"

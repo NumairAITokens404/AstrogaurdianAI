@@ -8,9 +8,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    allowedHosts: [
-      "snap-canvas-explore.onrender.com", // Add the host here
-    ],
+  },
+   preview: {
+    host: "::",
+    port: 10000, // Render uses 10000 by default
+    allowedHosts: ["snap-canvas-explore-astrogaurdian.onrender.com"],
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

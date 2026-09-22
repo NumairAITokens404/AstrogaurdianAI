@@ -8,6 +8,7 @@ import MissionCharts from "@/components/MissionCharts";
 import SolarSystemMap from "@/components/SolarSystemMap";
 import AlertNotification from "@/components/AlertNotification";
 import InteractiveMoodCompanion from "@/components/InteractiveMoodCompanion";
+import AstroGuardianAI from "@/components/AstroGuardianAI";
 import DigitalTwinSimulation from "@/components/DigitalTwinSimulation";
 import ParticleSystem from "@/components/ParticleSystem";
 import HolographicDisplay from "@/components/HolographicDisplay";
@@ -28,9 +29,12 @@ const Index = () => {
   const [communicationDelay, setCommunicationDelay] = useState("14m 32s");
   const [solDay, setSolDay] = useState(1247);
   const [earthDay, setEarthDay] = useState(new Date());
+  const [prompt, setPrompt]= useState("");
+  const [response, setResponse]= useState("");
   const realTimeData = useRealTimeData();
 
   const navigationItems = [
+    { id: "astroguard-ai", label: "AstroGuardian AI" },
     { id: "crew-health", label: "Crew Health" },
     { id: "rover-navigation", label: "Rover Navigation" },
     { id: "hazards", label: "Hazards & Debris" },
@@ -41,6 +45,9 @@ const Index = () => {
 
   const renderMainContent = () => {
     switch (activeNavItem) {
+      case "astroguard-ai":
+        return <AstroGuardianAI />;
+
       case "crew-health":
         return (
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">

@@ -28,6 +28,9 @@ interface SystemStatus {
 }
 
 interface RealTimeData {
+  communication: any;
+  environment: any;
+  metrics: any;
   crewMembers: CrewMember[];
   roverData: RoverData;
   systemStatus: SystemStatus;
@@ -63,6 +66,9 @@ const generateTimeStamp = (offset: number = 0): string => {
 
 export const RealTimeDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<RealTimeData>(() => ({
+    communication: {},
+  environment: {},
+  metrics: {},
     crewMembers: [
       {
         id: 1,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Heart, Sparkles, Zap, Shield } from 'lucide-react';
+import { Send, Bot, User, Heart, Sparkles, Zap, Shield, Volume2, VolumeX, FileDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import HolographicDisplay from './HolographicDisplay';
@@ -19,13 +19,14 @@ const InteractiveMoodCompanion = () => {
     {
       id: '1',
       type: 'bot',
-      content: "How are you feeling today? (lonely, sad, happy, confused) or type 'exit' to quit:",
+      content: "How are you feeling today? You can type anything (e.g., anxious, stressed, excited, bored, overwhelmed, tired, focused, lonely, homesick, frustrated). Type 'exit' to end.",
       timestamp: new Date()
     }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [sessionActive, setSessionActive] = useState(true);
+  const [ttsEnabled, setTtsEnabled] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -36,18 +37,79 @@ const InteractiveMoodCompanion = () => {
     scrollToBottom();
   }, [messages]);
 
-  const getResponse = (feeling: string): string => {
-    const responses = {
-      lonely: "I understand. Let's do a quick breathing exercise together. 🧘‍♂️",
-      sad: "That's ok astrobuddy! Let me play something nice to keep you focused on your mission. 🎵",
-      happy: "That's good astrobuddy! Keep smiling and spread your energy ✨",
-      confused: "That's ok astrobuddy! I've got your back. Tell me what's confusing you and we'll solve it together 🤝",
+  const getResponse = (feelingKey: string): string => {
+    const responses: Record<string, string> = {
+      lonely: "I hear you. Let's try a grounding check-in: look around and name 3 things you can see, 2 things you can feel, and 1 thing you can hear. I'm right here with you. 🧭",
+      sad: "It's okay to feel sad. Try a 4-7-8 breathing cycle with me: inhale 4, hold 7, exhale 8 — repeat 4 times. Want a calm audio track? 🎵",
+      happy: "Love that energy! Capture one good moment in a sentence so we can revisit it later. ✨",
+      confused: "Let's untangle it. What part feels unclear — the goal, the steps, or the tools? Pick one and we’ll break it down. 🧩",
+      anxious: "You're safe. Let's try box breathing (4-4-4-4). Also, label the fear in one short sentence. Naming it reduces intensity. 📦",
+      stressed: "Small reset: stand, stretch shoulders, roll your neck, sip water. Then we’ll pick the single smallest next task together. 💧",
+      excited: "Awesome! Channel it. What’s one bold step you can take in 10 minutes? 🚀",
+      bored: "Boredom can hide fatigue. Micro-shift: 2-minute walk, or switch to a 10-minute creative task. 🎨",
+      overwhelmed: "Too much at once — let’s stack-rank: Must, Should, Nice-to-have. What’s the one Must we can do in 5–10 minutes? 📋",
+      tired: "Rest fuels performance. Consider a 20-minute power nap or gentle movement. Your body matters. 😴",
+      focused: "Great flow! Set a 25-minute focus timer, no notifications. I’ll be here when it ends. ⏱️",
+      homesick: "That’s tough away from home. Message someone with one photo and one sentence about your day. Connection helps. 🏠",
+      frustrated: "I get it. Let’s defuse: write down the blocker in 1–2 lines. Then list 2 possible paths. We’ll try the simpler one. 🔧",
+      grateful: "Beautiful. What’s one thing you’re grateful for right now? Gratitude rewires stress. 🌟",
+      calm: "Nice and steady. Want a short visualization? Imagine a safe place with rich detail for 60 seconds. 🌊",
+      motivated: "Lock it in. What’s the next action that moves the needle most? Let’s commit. ✅",
       exit: "Stay safe, astronaut! 🧑‍🚀"
     };
-
-    return responses[feeling as keyof typeof responses] || 
-           "Hmm, I didn't understand that feeling. But remember, you're never alone 👋";
+    return responses[feelingKey] || "I’m here for you. Tell me more about how you feel in your own words. 👋";
   };
+
+  const feelingsSynonyms: Record<string, string[]> = {
+    lonely: ["lonely", "isolated", "alone"],
+    sad: ["sad", "down", "blue", "low"],
+    happy: ["happy", "joyful", "glad"],
+    confused: ["confused", "lost", "uncertain"],
+    anxious: ["anxious", "nervous", "worried", "tense"],
+    stressed: ["stressed", "under pressure", "burnt", "burned", "overworked"],
+    excited: ["excited", "pumped", "thrilled"],
+    bored: ["bored", "disengaged", "meh"],
+    overwhelmed: ["overwhelmed", "overloaded", "too much"],
+    tired: ["tired", "exhausted", "sleepy", "fatigued"],
+    focused: ["focused", "in the zone", "flow"],
+    homesick: ["homesick", "missing home", "nostalgic"],
+    frustrated: ["frustrated", "annoyed", "irritated", "stuck"],
+    grateful: ["grateful", "thankful", "appreciative"],
+    calm: ["calm", "peaceful", "relaxed"],
+    motivated: ["motivated", "driven", "determined"]
+  };
+
+  const detectFeelingKey = (text: string): string | null => {
+    const normalized = text.toLowerCase();
+    for (const key of Object.keys(feelingsSynonyms)) {
+      if (feelingsSynonyms[key].some(word => normalized.includes(word))) {
+        return key;
+      }
+    }
+    if (normalized === 'exit') return 'exit';
+    return null;
+  };
+
+  const speak = (text: string) => {
+    if (!ttsEnabled) return;
+    if (typeof window === 'undefined' || typeof window.speechSynthesis === 'undefined') return;
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      window.speechSynthesis.speak(utterance);
+    } catch {}
+  };
+
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && typeof window.speechSynthesis !== 'undefined') {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || !sessionActive) return;
@@ -73,11 +135,12 @@ const InteractiveMoodCompanion = () => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
-        content: getResponse(inputValue.toLowerCase()),
+        content: getResponse(detectFeelingKey(inputValue) || ''),
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, botResponse]);
+      speak(botResponse.content);
       setIsTyping(false);
 
       // Ask follow-up question if session is still active
@@ -86,10 +149,11 @@ const InteractiveMoodCompanion = () => {
           const followUpMessage: Message = {
             id: (Date.now() + 2).toString(),
             type: 'bot',
-            content: "How are you feeling now? (lonely, sad, happy, confused) or type 'exit' to quit:",
+            content: "How are you feeling now? You can type anything, or tap a suggestion below. Type 'exit' to end.",
             timestamp: new Date()
           };
           setMessages(prev => [...prev, followUpMessage]);
+          speak(followUpMessage.content);
         }, 2000);
       }
     }, 1500);
@@ -106,7 +170,7 @@ const InteractiveMoodCompanion = () => {
       {
         id: '1',
         type: 'bot',
-        content: "How are you feeling today? (lonely, sad, happy, confused) or type 'exit' to quit:",
+        content: "How are you feeling today? You can type anything (e.g., anxious, stressed, excited, bored, overwhelmed, tired, focused, lonely, homesick, frustrated). Type 'exit' to end.",
         timestamp: new Date()
       }
     ]);
@@ -147,6 +211,46 @@ const InteractiveMoodCompanion = () => {
 
         {/* Chat Interface */}
         <div className="bg-card/20 rounded-lg border border-border/30 backdrop-blur-sm">
+          {/* Controls */}
+          <div className="px-4 pt-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-primary border-primary/30 hover:bg-primary/10"
+                onClick={() => setTtsEnabled(prev => !prev)}
+              >
+                {ttsEnabled ? <Volume2 className="h-4 w-4 mr-2" /> : <VolumeX className="h-4 w-4 mr-2" />}
+                {ttsEnabled ? 'TTS On' : 'TTS Off'}
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-primary border-primary/30 hover:bg-primary/10"
+                onClick={() => {
+                  const lines = messages.map(m => {
+                    const role = m.type === 'user' ? 'YOU' : 'COMPANION';
+                    return `[${m.timestamp.toLocaleString()}] ${role}: ${m.content}`;
+                  }).join('\n');
+                  const blob = new Blob([lines], { type: 'text/plain;charset=utf-8' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'mood-companion-transcript.txt';
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+                  URL.revokeObjectURL(url);
+                }}
+              >
+                <FileDown className="h-4 w-4 mr-2" />
+                Export Transcript
+              </Button>
+            </div>
+          </div>
+
           <div className="h-96 overflow-y-auto p-4 space-y-3">
             <AnimatePresence>
               {messages.map((message) => (
@@ -220,6 +324,48 @@ const InteractiveMoodCompanion = () => {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Quick Suggestions */}
+          <div className="px-4 pt-3 border-t border-border/30">
+            <div className="flex flex-wrap gap-2">
+              {['anxious','stressed','excited','bored','overwhelmed','tired','focused','lonely','homesick','frustrated','grateful','calm','motivated','happy','sad','confused'].map((s) => {
+                const emojiMap: Record<string, string> = {
+                  anxious: '😟',
+                  stressed: '😤',
+                  excited: '🤩',
+                  bored: '😐',
+                  overwhelmed: '🥵',
+                  tired: '😴',
+                  focused: '🎯',
+                  lonely: '🥺',
+                  homesick: '🏠',
+                  frustrated: '😣',
+                  grateful: '🙏',
+                  calm: '🌊',
+                  motivated: '⚡',
+                  happy: '😊',
+                  sad: '😔',
+                  confused: '🤔'
+                };
+                return (
+                <Button
+                  key={s}
+                  variant="outline"
+                  size="sm"
+                  className="text-primary border-primary/30 hover:bg-primary/10"
+                  onClick={() => {
+                    if (!sessionActive || isTyping) return;
+                    setInputValue(s);
+                    setTimeout(() => { handleSendMessage(); }, 50);
+                  }}
+                  disabled={!sessionActive || isTyping}
+                >
+                  <span className="mr-1">{emojiMap[s]}</span>{s}
+                </Button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Input Area */}
           <div className="p-4 border-t border-border/30">
             <div className="flex space-x-2">
@@ -227,7 +373,7 @@ const InteractiveMoodCompanion = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder={sessionActive ? "Type your feeling..." : "Session ended"}
+                placeholder={sessionActive ? "Share your feeling or pick a suggestion..." : "Session ended"}
                 disabled={!sessionActive || isTyping}
                 className="flex-1 bg-background/50 border-border/30"
               />
