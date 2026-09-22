@@ -16,7 +16,7 @@ import MatrixRain from "@/components/MatrixRain";
 import GlitchText from "@/components/GlitchText";
 import QuantumLoader from "@/components/QuantumLoader";
 import SpaceShuttleMonitoring from "@/components/SpaceShuttleMonitoring";
-import CriticalAlertsPanel from "@/components/CriticalAlertsPanel";
+import ImmediateStatusPanel from "@/components/ImmediateStatusPanel";
 import { useRealTimeData } from "@/contexts/RealTimeDataContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import spaceBackground from "@/assets/space-background.jpg";
@@ -204,9 +204,6 @@ const Index = () => {
       <ParticleSystem />
       <MatrixRain />
       
-      {/* Critical Alerts Panel */}
-      <CriticalAlertsPanel />
-      
       {/* Animated scan lines */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -326,6 +323,9 @@ const Index = () => {
             </div>
           </motion.div>
         </motion.div>
+
+        {/* Inline status keeps live telemetry visible without covering the dashboard. */}
+        <ImmediateStatusPanel />
 
         {/* Space Shuttle Monitoring Dashboard */}
         <motion.div
