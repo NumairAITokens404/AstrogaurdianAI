@@ -20,7 +20,7 @@ const HolographicDisplay = ({ title, children, className = "" }: HolographicDisp
 
   return (
     <motion.div
-      className={`relative p-6 glass-card inner-hairline overflow-hidden ${className}`}
+      className={`relative p-4 sm:p-6 glass-card inner-hairline overflow-hidden ${className}`}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}

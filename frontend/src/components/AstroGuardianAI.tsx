@@ -99,7 +99,7 @@ const AstroGuardianAI = () => {
   return (
     <HolographicDisplay title="ASTRO GUARDIAN AI">
       <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           <motion.div 
             className="p-3 bg-primary/10 rounded-lg border border-primary/30 text-center"
             whileHover={{ scale: 1.02 }}
@@ -127,7 +127,7 @@ const AstroGuardianAI = () => {
         </div>
 
         <div className="bg-card/20 rounded-lg border border-border/30 backdrop-blur-sm">
-          <div className="h-96 overflow-y-auto p-4 space-y-3">
+          <div className="h-[min(55vh,24rem)] sm:h-96 overflow-y-auto p-3 sm:p-4 space-y-3">
             <AnimatePresence>
               {messages.map((m) => (
                 <motion.div
@@ -136,7 +136,7 @@ const AstroGuardianAI = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`flex items-start space-x-2 max-w-xs ${
+                  <div className={`flex items-start space-x-2 max-w-[88%] sm:max-w-xs ${
                     m.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''
                   }`}>
                     <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
@@ -189,7 +189,7 @@ const AstroGuardianAI = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="p-4 border-t border-border/30">
+          <div className="p-3 sm:p-4 border-t border-border/30">
             <div className="flex space-x-2">
               <Input
                 value={inputValue}
@@ -197,13 +197,13 @@ const AstroGuardianAI = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Ask AstroGuardian..."
                 disabled={isTyping}
-                className="flex-1 bg-background/50 border-border/30"
+                className="flex-1 min-w-0 bg-background/50 border-border/30"
               />
               <Button
                 onClick={handleSend}
                 disabled={!inputValue.trim() || isTyping}
                 size="icon"
-                className="bg-primary/20 hover:bg-primary/30 border border-primary/40"
+                className="h-10 w-10 shrink-0 bg-primary/20 hover:bg-primary/30 border border-primary/40"
               >
                 <Send className="h-4 w-4" />
               </Button>
@@ -216,5 +216,4 @@ const AstroGuardianAI = () => {
 };
 
 export default AstroGuardianAI;
-
 

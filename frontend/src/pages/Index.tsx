@@ -236,7 +236,7 @@ const Index = () => {
       <MissionHeader />
       
       {/* Main Dashboard */}
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
         {/* Alert Notification */}
         {showAlert && (
           <AlertNotification 
@@ -250,9 +250,9 @@ const Index = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6"
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="p-3 glass rounded-lg"
@@ -302,7 +302,7 @@ const Index = () => {
             </motion.div>
           </div>
           <motion.div 
-            className="text-right p-3 glass rounded-lg"
+            className="text-left sm:text-right p-3 glass rounded-lg"
             whileHover={{ scale: 1.05 }}
           >
             <div className="text-sm text-muted-foreground">System Status</div>
@@ -351,7 +351,7 @@ const Index = () => {
 
         {/* Dashboard Grid */}
         <motion.div 
-          className="grid grid-cols-1 lg:grid-cols-12 gap-6"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -359,21 +359,21 @@ const Index = () => {
         >
           {/* Left Sidebar */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="space-y-3 p-4 glass rounded-lg">
+            <div className="space-y-3 p-3 sm:p-4 glass rounded-lg">
               <div className="text-sm font-medium text-muted-foreground">Navigation Menu</div>
-              <div className="space-y-2 text-sm">
+              <div className="flex gap-2 overflow-x-auto pb-1 text-sm lg:block lg:space-y-2 lg:overflow-visible">
                 {navigationItems.map((item) => (
-                  <div
+                  <button
                     key={item.id}
-                    className={`cursor-pointer transition-colors ${
+                    className={`shrink-0 rounded-md px-3 py-2 text-left transition-colors lg:block lg:w-full lg:px-0 lg:py-0 ${
                       activeNavItem === item.id
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-primary/10 text-primary lg:bg-transparent"
+                        : "text-muted-foreground hover:bg-muted/30 hover:text-foreground lg:hover:bg-transparent"
                     }`}
                     onClick={() => setActiveNavItem(item.id)}
                   >
                     {item.label}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -392,7 +392,7 @@ const Index = () => {
 
 
         {/* Floating Data Cubes */}
-        <div className="fixed top-20 right-20 pointer-events-none">
+        <div className="fixed top-20 right-20 pointer-events-none hidden lg:block">
           <motion.div
             className="grid grid-cols-2 gap-2"
             animate={{ 
